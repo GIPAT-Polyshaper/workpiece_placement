@@ -31,7 +31,7 @@ private:
     /**
      * @brief images directory relative path
      */
-    const std::string img_path = ".." + kPathSeparator + "sample_imgs" + kPathSeparator;
+    const std::string img_path = ".." + kPathSeparator + ".." + kPathSeparator + "sample_imgs" + kPathSeparator;
 
     /**
      * @brief comparison accuracy
@@ -58,7 +58,7 @@ public:
      * @param img_name name of the image
      * @param mat matrix
      */
-    Image(string img_name, Mat mat);
+    Image(std::string img_name, Mat mat);
 
     /**
      * @brief Check if the image is equal to another one
