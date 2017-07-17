@@ -96,6 +96,21 @@ public:
      * @return Image cropped image
      */
     Image clean();
+
+//    Image * grayScale();
+
+/**
+ * @brief Find contours of shapes in the image
+ * @return array of contours
+ */
+    vector<vector<Point>> contours();
+
+/**
+ * @brief Find and return the contour with the biggest area
+ * @param contours vector of contours
+ * @return the biggest contour (biggest area) in the vector
+ */
+    vector<Point> biggestAreaContour(vector<vector<Point>> contours);
 };
 
 

@@ -9,7 +9,7 @@ Image::Image(std::string img_name) {
 
     this->name = img_name;
 
-    this->imgMat = imread(this->img_path + img_name );
+    this->imgMat = imread(this->img_path + img_name, CV_LOAD_IMAGE_GRAYSCALE );
 //    if ( imgMat.data )
 //    {
 //        //TODO: add exception when no file found
@@ -47,10 +47,33 @@ bool Image::isEqualTo(Image *img) {
     Mat src_test, hsv_test;
     src_base = this->imgMat;
     src_test = img->getMatImg();
+    //Histogram dimensionality
+    int dims;
 
-    //Hue Saturation Value conversion
-    cvtColor( src_base, hsv_base, COLOR_BGR2HSV );
-    cvtColor( src_test, hsv_test, COLOR_BGR2HSV );
+    //channels should be the same otherwise the images are not equals
+    if(src_base.channels()!= src_test.channels())
+    {
+        return false;
+    }
+    int * channels;
+    int channels1[] = {0};
+    int channels2[] = {0,1};
+    //if not grayscale
+    if(src_base.channels()!=1)
+    {
+        dims = 2;
+        //Hue Saturation Value conversion
+        cvtColor(src_base, hsv_base, COLOR_BGR2HSV);
+        cvtColor(src_test, hsv_test, COLOR_BGR2HSV);
+        // we compute the histogram from the 0-th and 1-st channels
+        channels = channels2;
+
+    } else{
+        dims = 1;
+        hsv_base = src_base;
+        hsv_test = src_test;
+        channels = channels1;
+    }
 
     // Quantize the hue to 30 levels
     // and the saturation to 32 levels
@@ -67,42 +90,34 @@ bool Image::isEqualTo(Image *img) {
     MatND hist_base;
     MatND hist_test;
 
-    // we compute the histogram from the 0-th and 1-st channels
-    int channels[] = {0, 1};
-
     calcHist( &hsv_base, 1, channels, Mat(),     // do not use mask
-              hist_base, 2, histSize, ranges, true,     // the histogram is uniform
+              hist_base, dims, histSize, ranges, true,     // the histogram is uniform
               false );
     normalize( hist_base, hist_base, 0, 1, NORM_MINMAX, -1, Mat() );
 
-    calcHist( &hsv_test, 1, channels, Mat(), hist_test, 2, histSize, ranges, true, false );
+    calcHist( &hsv_test, 1, channels, Mat(), hist_test, dims, histSize, ranges, true, false );
     normalize( hist_test, hist_test, 0, 1, NORM_MINMAX, -1, Mat() );
+
     double resultComparison = compareHist( hist_base, hist_test, CV_COMP_CORREL);
 
     return resultComparison < comparisonAccuracy ? false : true;
 }
 
-Image Image::clean() {
 
-    // convert to grayscale
-    cv::Mat gray;
-    cv::cvtColor(this->imgMat,gray, CV_BGR2GRAY);
-
+std::vector<std::vector<cv::Point>> Image::contours(){
     // convert to binary inverted, findContours find only contours of white area but background is black
     cv::Mat mask;
-    cv::threshold(gray, mask, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU);
+    cv::threshold(this->getMatImg(), mask, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU);
 
     // find contours
     std::vector<std::vector<cv::Point>> contours;
-    std::vector<cv::Vec4i> hierarchy;
     cv::findContours(mask,contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+    return contours;
+}
 
-    // detect the biggest contour
-    // ?????????????background should be bigger than other shapes on the image???????????????
+std::vector<cv::Point> Image::biggestAreaContour(std::vector<std::vector<cv::Point>> contours){
     int largest_area=0;
     int largest_contour_index=0;
-    Rect bounding_rect;
-    Mat drawing = Mat::zeros(mask.size(), CV_8UC3 );
     for( int i = 0; i< contours.size(); i++ )
     {
         //  Find the area of contour
@@ -111,11 +126,23 @@ Image Image::clean() {
             largest_area=a;
             // Store the index of largest contour
             largest_contour_index=i;
-            // Find the bounding rectangle for biggest contour
-            bounding_rect=boundingRect(contours[i]);
         }
     }
+    return contours[largest_contour_index];
+}
+
+
+
+Image Image::clean() {
+    //find contours
+    std::vector<std::vector<cv::Point>> contours = this->contours();
+    // ?????????????background should be bigger than other shapes on the image???????????????
+    // detect the biggest contour
+    std::vector<cv::Point> biggestContour = this->biggestAreaContour(contours);
+    //find bounding rectangle of contour
+    Rect bounding_rect = boundingRect(biggestContour);
     // rectangle mask to crop original image
+    Mat drawing = Mat::zeros(this->getMatImg().size(), CV_8UC3 ); //new zeros matrix same size image
     rectangle(drawing, bounding_rect,  Scalar(255,0,0),2, 8,0);
     // crop image
     Mat croppedMat = this->imgMat(bounding_rect);
