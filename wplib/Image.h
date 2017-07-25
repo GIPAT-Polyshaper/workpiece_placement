@@ -7,15 +7,14 @@
 
 #include "stdio.h"
 #include "string"
+#include "WorkingArea.h"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
 
 class Image {
 
-
 private:
-
 
     /**
          * @brief directory separator
@@ -26,7 +25,6 @@ private:
     #else
                 "/";
     #endif
-
 
     /**
      * @brief images directory relative path
@@ -41,18 +39,31 @@ private:
      */
     const double comparisonAccuracy = 0.95;
 
-    std::string name = "";
+    std::string m_name = "";
 
-    cv::Mat imgMat = Mat();
+    cv::Mat m_mat;
+
+    WorkingArea m_workingArea;
+
+private:
+
+    /**
+     * @brief Read an image
+     * @param img_name Name of the image to read
+     * @throw invalid_argument exception when image is not found
+     * @return Matrix
+     */
+    cv::Mat readImage(std::string img_name);
 
 public:
 
     /**
      * @brief Constructor
+     * @throw invalid_argument exception when image is not found
      * @param img_name name of the image
      */
-
     Image(std::string img_name);
+
     /**
      * @brief Constructor
      * @param img_name name of the image
@@ -65,7 +76,7 @@ public:
      * @param img a pointer to image to compare
      * @return True if equal, False otherwise
      */
-    bool isEqualTo(Image *img);
+    bool isEqualTo(const Image &);
 
     /**
      * @brief get method for the name
@@ -85,32 +96,23 @@ public:
     void showImg();
 
     /**
-     * get method for the matrix
-     * @return matrix of the image
+     * @brief draw working area
      */
-    Mat getMatImg() const;
+    void drawWorkingArea();
 
     /**
-     * @brief remove everything is outside the worktop
-     * @details if the shot is larger than worktop removes everything is outside. Worktop must be black!
-     * @return Image cropped image
+     * @brief get method for matrix member
+     * @return matrix of current Image
      */
-    Image clean();
+    const Mat& getImgMat() const;
 
-//    Image * grayScale();
+    /**
+     * @brief get methif for the working area member
+     * @return working area
+     */
+    const WorkingArea &getWorkingArea() const;
 
-/**
- * @brief Find contours of shapes in the image
- * @return array of contours
- */
-    vector<vector<Point>> contours();
-
-/**
- * @brief Find and return the contour with the biggest area
- * @param contours vector of contours
- * @return the biggest contour (biggest area) in the vector
- */
-    vector<Point> biggestAreaContour(vector<vector<Point>> contours);
+    Image extractWorkingArea();
 };
 
 

@@ -4,49 +4,81 @@
 
 #include "Image.h"
 
+namespace {
 
-Image::Image(std::string img_name) {
+    template <typename Type>
+    /**
+     * @brief crop image
+     * @param img image to be cropped
+     * @param area cropping area
+     * @return cropped image
+     */
+    Image imageCutter(const Mat &mat, Type area) {
 
-    this->name = img_name;
+        //find bounding rectangle of Contour
+        Rect bounding_rect = boundingRect(area);
+        // rectangle mask to crop original image
+        Mat drawing = Mat::zeros(mat.size(), CV_8UC3 ); //new zeros matrix same size image
+        rectangle(drawing, bounding_rect,  Scalar(255,0,0),2, 8,0);
+        // crop image
+        return imageCutter(mat,bounding_rect);
+    }
 
-    this->imgMat = imread(this->img_path + img_name, CV_LOAD_IMAGE_GRAYSCALE );
-//    if ( imgMat.data )
-//    {
-//        //TODO: add exception when no file found
-//        printf("No image data \n");
-//    }
+    template <> Image imageCutter(const Mat &mat, cv::Rect area){
+
+        Mat croppedMat = mat(area);
+        Image i = Image("croppedImage", croppedMat);
+        return i;
+
+    }
+
 }
 
-Image::Image(std::string img_name, Mat mat) {
+Image::Image(std::string img_name)
+        :m_workingArea(this->readImage(img_name))
+        , m_name(img_name)
+        , m_mat(this->readImage(img_name))
+{}
 
-    this->name = img_name;
-    this->imgMat = mat;
+Image::Image(std::string img_name, Mat mat)
+        :m_workingArea(mat) {
+    if(mat.channels()!=1)
+    {
+        cv::cvtColor(mat, mat, cv::COLOR_BGR2GRAY);
+    }
+    this->m_name = img_name;
+    this->m_mat = mat;
+}
+
+const WorkingArea &Image::getWorkingArea() const {
+    return m_workingArea;
 }
 
 const std::string Image::getPath() const {
     return this->img_path;
 }
 
-Mat Image::getMatImg() const {
-    return this->imgMat;
+const Mat &Image::getImgMat() const {
+    return m_mat;
 }
 
 const std::string Image::getName() const {
-    return this->name;
+    return this->m_name;
 }
 
 void Image::showImg() {
-    namedWindow(this->name, WINDOW_NORMAL);
-    imshow(this->name, this->imgMat);
+    namedWindow(this->m_name, WINDOW_NORMAL);
+    imshow(this->m_name, this->m_mat);
     waitKey(0);
 }
 
-bool Image::isEqualTo(Image *img) {
+
+bool Image::isEqualTo(const Image& img) {
 
     Mat src_base, hsv_base;
     Mat src_test, hsv_test;
-    src_base = this->imgMat;
-    src_test = img->getMatImg();
+    src_base = this->m_mat;
+    src_test = img.getImgMat();
     //Histogram dimensionality
     int dims;
 
@@ -103,49 +135,19 @@ bool Image::isEqualTo(Image *img) {
     return resultComparison < comparisonAccuracy ? false : true;
 }
 
+cv::Mat Image::readImage(std::string img_name) {
 
-std::vector<std::vector<cv::Point>> Image::contours(){
-    // convert to binary inverted, findContours find only contours of white area but background is black
-    cv::Mat mask;
-    cv::threshold(this->getMatImg(), mask, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU);
+    Mat mat = imread(this->img_path + img_name, IMREAD_GRAYSCALE);
+    if(!mat.data)
+        throw std::invalid_argument("No files found");
+    return mat;
 
-    // find contours
-    std::vector<std::vector<cv::Point>> contours;
-    cv::findContours(mask,contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-    return contours;
 }
 
-std::vector<cv::Point> Image::biggestAreaContour(std::vector<std::vector<cv::Point>> contours){
-    int largest_area=0;
-    int largest_contour_index=0;
-    for( int i = 0; i< contours.size(); i++ )
-    {
-        //  Find the area of contour
-        double a=contourArea( contours[i],false);
-        if(a>largest_area){
-            largest_area=a;
-            // Store the index of largest contour
-            largest_contour_index=i;
-        }
-    }
-    return contours[largest_contour_index];
+void Image::drawWorkingArea() {
+    rectangle(this->m_mat, this->m_workingArea.getRect(), Scalar(0,0,0), 5, 8);
 }
 
-
-
-Image Image::clean() {
-    //find contours
-    std::vector<std::vector<cv::Point>> contours = this->contours();
-    // ?????????????background should be bigger than other shapes on the image???????????????
-    // detect the biggest contour
-    std::vector<cv::Point> biggestContour = this->biggestAreaContour(contours);
-    //find bounding rectangle of contour
-    Rect bounding_rect = boundingRect(biggestContour);
-    // rectangle mask to crop original image
-    Mat drawing = Mat::zeros(this->getMatImg().size(), CV_8UC3 ); //new zeros matrix same size image
-    rectangle(drawing, bounding_rect,  Scalar(255,0,0),2, 8,0);
-    // crop image
-    Mat croppedMat = this->imgMat(bounding_rect);
-
-    return Image("croppedImage", croppedMat);
+Image Image::extractWorkingArea() {
+    return imageCutter<Rect>(this->getImgMat(), this->getWorkingArea().getRect());
 }
