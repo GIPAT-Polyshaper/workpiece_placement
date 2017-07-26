@@ -15,3 +15,4 @@ function(addTest testName)
 #add tests
 addTest(Image)
 addTest(WorkingArea)
+addTest(WorkPiece)

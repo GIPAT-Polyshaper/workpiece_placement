@@ -1,4 +1,4 @@
-set(SOURCE_FILES Image.h Image.cpp WorkingArea.cpp WorkingArea.h)
+set(SOURCE_FILES Image.h Image.cpp WorkingArea.cpp WorkingArea.h WorkPiece.cpp WorkPiece.h)
 
 
 add_library(wplib STATIC ${SOURCE_FILES})

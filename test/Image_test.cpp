@@ -2,7 +2,9 @@
 // Created by riccardo on 10/07/17.
 //
 
+#ifndef CATCH_CONFIG_MAIN
 #define CATCH_CONFIG_MAIN
+#endif
 #include "../include/catch.hpp"
 #include "../wplib/Image.h"
 

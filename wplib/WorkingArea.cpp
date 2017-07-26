@@ -67,3 +67,15 @@ cv::Point_<int> WorkingArea::getTopLeft()const {
 cv::Point_<int> WorkingArea::getBottomRight() const {
     return this->m_rect.br();
 }
+
+WorkingArea::WorkingArea(const cv::Mat &mat, const WorkPiece &piece): m_rect(cv::Rect(0, 0, mat.size().width, mat.size().height)),
+                                                                      m_workPiece(piece)
+{}
+
+const WorkPiece &WorkingArea::getM_workPiece() const {
+    return m_workPiece;
+}
+
+const cv::Rect &WorkingArea::getM_rect() const {
+    return m_rect;
+}

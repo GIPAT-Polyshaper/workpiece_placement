@@ -145,9 +145,9 @@ cv::Mat Image::readImage(std::string img_name) {
 }
 
 void Image::drawWorkingArea() {
-    rectangle(this->m_mat, this->m_workingArea.getRect(), Scalar(0,0,0), 5, 8);
+    rectangle(this->m_mat, this->m_workingArea.getM_rect(), Scalar(0,0,0), 5, 8);
 }
 
 Image Image::extractWorkingArea() {
-    return imageCutter<Rect>(this->getImgMat(), this->getWorkingArea().getRect());
+    return imageCutter<Rect>(this->getImgMat(), this->getWorkingArea().getM_rect());
 }
