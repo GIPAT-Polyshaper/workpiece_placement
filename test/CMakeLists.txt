@@ -18,4 +18,4 @@ addTest(WorkPiece)
 addTest(ImageLoader)
 addTest(ContourDetector)
 addTest(WorkingAreaExtractor)
-
+addTest(ImageCutter)

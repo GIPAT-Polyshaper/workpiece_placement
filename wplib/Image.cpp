@@ -4,34 +4,7 @@
 
 #include "Image.h"
 
-namespace {
 
-    template <typename Type>
-    /**
-     * @brief crop image
-     * @param img image to be cropped
-     * @param area cropping area
-     * @return cropped image
-     */
-    Image imageCutter(const Mat &mat, Type area) {
-
-        //find bounding rectangle of Contour
-        Rect bounding_rect = boundingRect(area);
-        // rectangle mask to crop original image
-        Mat drawing = Mat::zeros(mat.size(), CV_8UC3 ); //new zeros matrix same size image
-        rectangle(drawing, bounding_rect,  Scalar(255,0,0),2, 8,0);
-        // crop image
-        return imageCutter(mat,bounding_rect);
-    }
-
-    template <> Image imageCutter(const Mat &mat, cv::Rect area){
-
-        Mat croppedMat = mat(area);
-        Image i = Image(croppedMat);
-        return i;
-
-    }
-}
 
 Image::Image(std::string img_name, Mat mat) :
         m_name(img_name)
