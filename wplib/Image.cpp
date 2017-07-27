@@ -27,43 +27,37 @@ namespace {
     template <> Image imageCutter(const Mat &mat, cv::Rect area){
 
         Mat croppedMat = mat(area);
-        Image i = Image("croppedImage", croppedMat);
+        Image i = Image(croppedMat);
         return i;
 
     }
-
 }
 
-Image::Image(std::string img_name)
-        :m_workingArea(this->readImage(img_name))
-        , m_name(img_name)
-        , m_mat(this->readImage(img_name))
-{}
-
-Image::Image(std::string img_name, Mat mat)
-        :m_workingArea(mat) {
+Image::Image(std::string img_name, Mat mat) :
+        m_name(img_name)
+{
     if(mat.channels()!=1)
     {
         cv::cvtColor(mat, mat, cv::COLOR_BGR2GRAY);
     }
-    this->m_name = img_name;
     this->m_mat = mat;
 }
 
-const WorkingArea &Image::getWorkingArea() const {
-    return m_workingArea;
+Image::Image(cv::Mat mat) {
+
+    if(mat.channels()!=1)
+    {
+        cv::cvtColor(mat, mat, cv::COLOR_BGR2GRAY);
+    }
+    this->m_mat = mat;
 }
 
-const std::string Image::getPath() const {
-    return this->img_path;
+const std::string &Image::getM_name() const {
+    return m_name;
 }
 
-const Mat &Image::getImgMat() const {
+const Mat &Image::getM_mat() const {
     return m_mat;
-}
-
-const std::string Image::getName() const {
-    return this->m_name;
 }
 
 void Image::showImg() {
@@ -72,13 +66,12 @@ void Image::showImg() {
     waitKey(0);
 }
 
-
 bool Image::isEqualTo(const Image& img) {
 
     Mat src_base, hsv_base;
     Mat src_test, hsv_test;
     src_base = this->m_mat;
-    src_test = img.getImgMat();
+    src_test = img.getM_mat();
     //Histogram dimensionality
     int dims;
 
@@ -133,21 +126,4 @@ bool Image::isEqualTo(const Image& img) {
     double resultComparison = compareHist( hist_base, hist_test, CV_COMP_CORREL);
 
     return resultComparison < comparisonAccuracy ? false : true;
-}
-
-cv::Mat Image::readImage(std::string img_name) {
-
-    Mat mat = imread(this->img_path + img_name, IMREAD_GRAYSCALE);
-    if(!mat.data)
-        throw std::invalid_argument("No files found");
-    return mat;
-
-}
-
-void Image::drawWorkingArea() {
-    rectangle(this->m_mat, this->m_workingArea.getM_rect(), Scalar(0,0,0), 5, 8);
-}
-
-Image Image::extractWorkingArea() {
-    return imageCutter<Rect>(this->getImgMat(), this->getWorkingArea().getM_rect());
 }

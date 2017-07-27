@@ -7,7 +7,6 @@
 
 #include "stdio.h"
 #include "string"
-#include "WorkingArea.h"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
@@ -16,20 +15,6 @@ class Image {
 
 private:
 
-    /**
-         * @brief directory separator
-         */
-    const std::string kPathSeparator =
-    #ifdef _WIN32
-                "\\";
-    #else
-                "/";
-    #endif
-
-    /**
-     * @brief images directory relative path
-     */
-    const std::string img_path = ".." + kPathSeparator + ".." + kPathSeparator + "sample_imgs" + kPathSeparator;
 
     /**
      * @brief comparison accuracy
@@ -43,26 +28,9 @@ private:
 
     cv::Mat m_mat;
 
-    WorkingArea m_workingArea;
-
-private:
-
-    /**
-     * @brief Read an image
-     * @param img_name Name of the image to read
-     * @throw invalid_argument exception when image is not found
-     * @return Matrix
-     */
-    cv::Mat readImage(std::string img_name);
 
 public:
 
-    /**
-     * @brief Constructor
-     * @throw invalid_argument exception when image is not found
-     * @param img_name name of the image
-     */
-    Image(std::string img_name);
 
     /**
      * @brief Constructor
@@ -70,6 +38,12 @@ public:
      * @param mat matrix
      */
     Image(std::string img_name, Mat mat);
+
+    /**
+     * @brief Constructor
+     * @param mat matrix
+     */
+    Image(cv::Mat mat);
 
     /**
      * @brief Check if the image is equal to another one
@@ -82,13 +56,7 @@ public:
      * @brief get method for the name
      * @return string, name of the Image
      */
-    const std::string getName() const;
-
-    /**
-     * @brief get method for the image path
-     * @return string, path of the Image
-     */
-    const std::string getPath() const;
+    const std::string &getM_name() const;
 
     /**
      * @brief shows the image in a fixed size window
@@ -96,23 +64,11 @@ public:
     void showImg();
 
     /**
-     * @brief draw working area
-     */
-    void drawWorkingArea();
-
-    /**
      * @brief get method for matrix member
      * @return matrix of current Image
      */
-    const Mat& getImgMat() const;
+    const Mat& getM_mat() const;
 
-    /**
-     * @brief get methif for the working area member
-     * @return working area
-     */
-    const WorkingArea &getWorkingArea() const;
-
-    Image extractWorkingArea();
 };
 
 

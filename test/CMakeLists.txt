@@ -14,5 +14,8 @@ function(addTest testName)
 
 #add tests
 addTest(Image)
-addTest(WorkingArea)
 addTest(WorkPiece)
+addTest(ImageLoader)
+addTest(ContourDetector)
+addTest(WorkingAreaExtractor)
+

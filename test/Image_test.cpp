@@ -8,39 +8,56 @@
 #include "../include/catch.hpp"
 #include "../wplib/Image.h"
 
-TEST_CASE("Image"){
+TEST_CASE("Image creation"){
 
-    SECTION("creating new image from not existing file throw invalid argument exception")
-    {
-        REQUIRE_THROWS_AS( new Image("ciao"), std::invalid_argument );
+    SECTION("creating image from zeros matrix"){
+        cv::Mat zMat = Mat::zeros(400,400,CV_8UC1);
+        Image zImg = Image(zMat);
+        cv::Mat dst;
+        cv::bitwise_xor(zImg.getM_mat(), zMat, dst);
+        REQUIRE_FALSE(cv::countNonZero(dst));
     }
 
-    SECTION("opening image from file sistem and initializing Image object")
-    {
-        Image *img1 = new Image("IMG_2215.JPG");
-        REQUIRE(img1->getImgMat().size);
+    SECTION("creating image from ones matrix"){
+        cv::Mat oMat = Mat::ones(400,400,CV_8UC1);
+        Image oImg = Image(oMat);
+        cv::Mat dst;
+        cv::bitwise_xor(oImg.getM_mat(), oMat, dst);
+        REQUIRE_FALSE(cv::countNonZero(dst));
     }
 
-    SECTION("is an image  equal to itself?")
-    {
-        Image *img1 = new Image("IMG_2215.JPG");
-        Image *img2 = new Image("IMG_2215.JPG");
-        REQUIRE(img1->isEqualTo(*img2));
-
-        SECTION("is an image equal to a different one?")
-        {
-            Image *img3 = new Image("IMG_2216.JPG");
-            REQUIRE_FALSE(img1->isEqualTo(*img3));
-        }
-    }
-    
-    SECTION("working area extraction")
-    {
-        Image *img = new Image("workingArea300x400.png");
-        Image waImg = img->extractWorkingArea();
-        REQUIRE(waImg.getImgMat().rows == 399);
-        REQUIRE(waImg.getImgMat().cols == 299);
-    }
-    
 }
 
+//
+//TEST_CASE("Image"){
+//
+//
+//    SECTION("opening image from file sistem and initializing Image object")
+//    {
+//        Image *img1 = new Image("IMG_2215.JPG");
+//        REQUIRE(img1->getImgMat().size);
+//    }
+//
+//    SECTION("is an image  equal to itself?")
+//    {
+//        Image *img1 = new Image("IMG_2215.JPG");
+//        Image *img2 = new Image("IMG_2215.JPG");
+//        REQUIRE(img1->isEqualTo(*img2));
+//
+//        SECTION("is an image equal to a different one?")
+//        {
+//            Image *img3 = new Image("IMG_2216.JPG");
+//            REQUIRE_FALSE(img1->isEqualTo(*img3));
+//        }
+//    }
+//
+//    SECTION("working area extraction")
+//    {
+//        Image *img = new Image("workingArea300x400.png");
+//        Image waImg = img->extractWorkingArea();
+//        REQUIRE(waImg.getImgMat().rows == 399);
+//        REQUIRE(waImg.getImgMat().cols == 299);
+//    }
+//
+//}
+//
