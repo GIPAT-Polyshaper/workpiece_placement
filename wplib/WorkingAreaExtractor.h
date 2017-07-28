@@ -11,38 +11,21 @@
 class WorkingAreaExtractor {
 
 public:
-//
-//    struct WorkingArea{
-//
-//        WorkingArea(int x, int y , int width, int height):
-//                x(x),
-//                y(y),
-//                width(width),
-//                height(height)
-//        {}
-//        
-//        WorkingArea(const WorkingArea& a):
-//                x(a.x),
-//                y(a.y),
-//                width(a.width),
-//                height(a.height)
-//        {}
-//
-//        int x;
-//        int y;
-//        int width;
-//        int height;
-//
-//    };
-//
-//    using WorkingArea;
 
     cv::Rect m_workingArea;
 
 public:
 
+    /**
+     * @brief constructor
+     * @param img image where search working area
+     */
     WorkingAreaExtractor(const Image &img);
 
+    /**
+     * @brief Get method workingArea member
+     * @return rectangle representing working area
+     */
     const cv::Rect &getM_workingArea() const;
 };
 

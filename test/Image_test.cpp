@@ -7,6 +7,7 @@
 #endif
 #include "../include/catch.hpp"
 #include "../wplib/Image.h"
+#include "../wplib/ImageLoader.h"
 
 TEST_CASE("Image creation"){
 
@@ -28,36 +29,22 @@ TEST_CASE("Image creation"){
 
 }
 
-//
-//TEST_CASE("Image"){
-//
-//
-//    SECTION("opening image from file sistem and initializing Image object")
-//    {
-//        Image *img1 = new Image("IMG_2215.JPG");
-//        REQUIRE(img1->getImgMat().size);
-//    }
-//
-//    SECTION("is an image  equal to itself?")
-//    {
-//        Image *img1 = new Image("IMG_2215.JPG");
-//        Image *img2 = new Image("IMG_2215.JPG");
-//        REQUIRE(img1->isEqualTo(*img2));
-//
-//        SECTION("is an image equal to a different one?")
-//        {
-//            Image *img3 = new Image("IMG_2216.JPG");
-//            REQUIRE_FALSE(img1->isEqualTo(*img3));
-//        }
-//    }
-//
-//    SECTION("working area extraction")
-//    {
-//        Image *img = new Image("workingArea300x400.png");
-//        Image waImg = img->extractWorkingArea();
-//        REQUIRE(waImg.getImgMat().rows == 399);
-//        REQUIRE(waImg.getImgMat().cols == 299);
-//    }
-//
-//}
-//
+TEST_CASE("Image comparison"){
+
+    Image img1 = ImageLoader("IMG_2215.JPG").getM_image();
+    
+    SECTION("is an image  equal to itself?")
+    {
+        Image img2 = ImageLoader("IMG_2215.JPG").getM_image();
+        REQUIRE(img1.isEqualTo(img2));
+
+        SECTION("is an image equal to a different one?")
+        {
+            Image img3 = ImageLoader("IMG_2216.JPG").getM_image();
+            REQUIRE_FALSE(img1.isEqualTo(img3));
+        }
+    }
+
+
+}
+
