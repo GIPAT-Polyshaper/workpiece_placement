@@ -38,11 +38,12 @@ TEST_CASE("Image comparison"){
         Image img2 = ImageLoader("IMG_2215.JPG").getM_image();
         REQUIRE(img1.isEqualTo(img2));
 
-        SECTION("is an image equal to a different one?")
-        {
-            Image img3 = ImageLoader("IMG_2216.JPG").getM_image();
-            REQUIRE_FALSE(img1.isEqualTo(img3));
-        }
+
+    }
+    SECTION("is an image equal to a different one?")
+    {
+        Image img3 = ImageLoader("IMG_2216.JPG").getM_image();
+        REQUIRE_FALSE(img1.isEqualTo(img3));
     }
 
 

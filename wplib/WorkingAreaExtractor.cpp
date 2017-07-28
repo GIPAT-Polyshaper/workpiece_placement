@@ -5,6 +5,7 @@
 #include "WorkingAreaExtractor.h"
 #include "Image.h"
 #include "ContourDetector.h"
+#include "BiggestContourFinder.h"
 
 namespace {
 
@@ -29,7 +30,7 @@ namespace {
 
 
 WorkingAreaExtractor::WorkingAreaExtractor(const Image & img):
-        m_workingArea(findBundingRect(ContourDetector(img, true).biggestContour())) {}
+        m_workingArea(findBundingRect(BiggestContourFinder().biggestContour(ContourDetector().contours(img.getM_mat(), true)))) {}
 
 const cv::Rect &WorkingAreaExtractor::getM_workingArea() const {
     return this->m_workingArea;

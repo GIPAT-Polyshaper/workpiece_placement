@@ -34,7 +34,8 @@ public:
      * @return first point(top left) of working piece
      */
     const cv::Point &getM_point() const;
-    
+
+
     /**
      * @brief Get method for angle member
      * @return angle between working piece side and working area side

@@ -4,9 +4,12 @@
 #include "../wplib/WorkingAreaExtractor.h"
 #include "../wplib/ImageCutter.h"
 
+
+//TODO marker opencv e rettificazione d'immagine
+
 int main() {
 
-    Image img = ImageLoader("IMG_2216.JPG").getM_image();
+    Image img = ImageLoader("IMG_2215_shapes.png").getM_image();
     img.showImg();
     Rect r = WorkingAreaExtractor(img).getM_workingArea();
 
