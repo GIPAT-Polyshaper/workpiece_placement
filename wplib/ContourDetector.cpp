@@ -13,4 +13,5 @@ std::vector<std::vector<cv::Point>> ContourDetector::contours(const cv::Mat &mat
     // find contours
     std::vector<std::vector<cv::Point>> contours;
     cv::findContours(mask,contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-    return contours;}
+    return contours;
+}

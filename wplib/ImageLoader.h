@@ -5,7 +5,7 @@
 #ifndef WORKPIECE_PLACEMENT_IMAGELOADER_H
 #define WORKPIECE_PLACEMENT_IMAGELOADER_H
 
-
+//TODO spostare tutta la parte sul path nell'ambito dei test
 #include "Image.h"
 
 class ImageLoader {
