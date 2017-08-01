@@ -10,21 +10,21 @@
 
 class ImageLoader {
 
-private:
-    /**
-     * @brief directory separator
-     */
-    const std::string kPathSeparator =
-#ifdef _WIN32
-            "\\";
-#else
-            "/";
-#endif
-
-    /**
-     * @brief images directory relative path
-     */
-    const std::string img_path = ".." + kPathSeparator + ".." + kPathSeparator + "sample_imgs" + kPathSeparator;
+//private:
+//    /**
+//     * @brief directory separator
+//     */
+//    const std::string kPathSeparator =
+//#ifdef _WIN32
+//            "\\";
+//#else
+//            "/";
+//#endif
+//
+//    /**
+//     * @brief images directory relative path
+//     */
+//    const std::string img_path = ".." + kPathSeparator + ".." + kPathSeparator + "sample_imgs" + kPathSeparator;
 
 public:
 

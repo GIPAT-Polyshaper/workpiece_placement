@@ -9,12 +9,14 @@
 #include "../include/catch.hpp"
 #include "../wplib/Image.h"
 #include "../wplib/ImageLoader.h"
+#include "test_config.h"
+
 
 TEST_CASE("Loading image from file"){
 
     SECTION("loading image"){
 
-        std::string filename = "IMG_2215.JPG";
+        std::string filename = img_path+"IMG_2215.JPG";
         Image img = ImageLoader(filename).getM_image();
         REQUIRE(img.getM_mat().cols == 3264);
         REQUIRE(img.getM_mat().rows == 2448);

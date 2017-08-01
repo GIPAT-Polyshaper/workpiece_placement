@@ -11,6 +11,7 @@
 #include "../wplib/WorkPiece.h"
 #include "../wplib/WorkPieceExtractor.h"
 #include "../wplib/ImageLoader.h"
+#include "test_config.h"
 
 
 TEST_CASE("Extracting workpiece"){
@@ -28,7 +29,7 @@ TEST_CASE("Extracting workpiece"){
 
     SECTION("Extracting workpiece from a purpose-built image")
     {
-        Image img = ImageLoader("prova2.png").getM_image();
+        Image img = ImageLoader(img_path+"prova2.png").getM_image();
         WorkPiece wp = WorkPieceExtractor().workpiece(img.getM_mat());
         REQUIRE(wp.getM_point().x == 100);
         REQUIRE(wp.getM_point().y == 150);

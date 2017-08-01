@@ -9,6 +9,7 @@
 #include "../wplib/Image.h"
 #include "../wplib/ImageLoader.h"
 #include "../wplib/ContourDetector.h"
+#include "test_config.h"
 
 
 TEST_CASE("Detecting contours inside image"){
@@ -37,7 +38,7 @@ TEST_CASE("Detecting contours inside image"){
 
     SECTION("Detecting contours of external black areas"){
 
-        Image img = ImageLoader("prova.png").getM_image();
+        Image img = ImageLoader(img_path+"prova.png").getM_image();
         std::vector<std::vector<cv::Point>> vec = ContourDetector().contours(img.getM_mat(), true);
         REQUIRE(vec.size() == 1);
         REQUIRE(vec[0][0].x == 50 );
@@ -48,7 +49,7 @@ TEST_CASE("Detecting contours inside image"){
 
     SECTION("Detecting contours of external white areas"){
 
-        Image img = ImageLoader("prova.png").getM_image();
+        Image img = ImageLoader(img_path+"prova.png").getM_image();
         std::vector<std::vector<cv::Point>> vec = ContourDetector().contours(img.getM_mat(), false);
         REQUIRE(vec.size() == 1);
         REQUIRE(vec[0][0].x == 1 );

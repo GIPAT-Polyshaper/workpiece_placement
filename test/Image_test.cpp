@@ -8,6 +8,7 @@
 #include "../include/catch.hpp"
 #include "../wplib/Image.h"
 #include "../wplib/ImageLoader.h"
+#include "./test_config.h"
 
 TEST_CASE("Image creation"){
 
@@ -31,18 +32,18 @@ TEST_CASE("Image creation"){
 
 TEST_CASE("Image comparison"){
 
-    Image img1 = ImageLoader("IMG_2215.JPG").getM_image();
+    Image img1 = ImageLoader(img_path+"IMG_2215.JPG").getM_image();
     
     SECTION("is an image  equal to itself?")
     {
-        Image img2 = ImageLoader("IMG_2215.JPG").getM_image();
+        Image img2 = ImageLoader(img_path+"IMG_2215.JPG").getM_image();
         REQUIRE(img1.isEqualTo(img2));
 
 
     }
     SECTION("is an image equal to a different one?")
     {
-        Image img3 = ImageLoader("IMG_2216.JPG").getM_image();
+        Image img3 = ImageLoader(img_path+"IMG_2216.JPG").getM_image();
         REQUIRE_FALSE(img1.isEqualTo(img3));
     }
 

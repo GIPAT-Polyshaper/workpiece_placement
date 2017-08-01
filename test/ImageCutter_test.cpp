@@ -10,10 +10,11 @@
 #include "../wplib/Image.h"
 #include "../wplib/ImageLoader.h"
 #include "../wplib/ImageCutter.h"
+#include "test_config.h"
 
 TEST_CASE("Image cutting")
 {
-    Image img = ImageLoader("prova2.png").getM_image();
+    Image img = ImageLoader(img_path+"prova2.png").getM_image();
 
     SECTION("rectangle cropping") {
 

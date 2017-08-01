@@ -31,7 +31,7 @@ TEST_CASE("Finding biggest contour"){
         REQUIRE(bigCont[2].x == 10);
         REQUIRE(bigCont[2].y == 10);
 
-        // parent section fail prevent following sections from running
+        // parent section fail prevents following sections from running
 
         SECTION("Adding a bigger contour"){
             std::vector<cv::Point> contour1 = {cv::Point(1,1), cv::Point(1,20), cv::Point(20,20), cv::Point(20,1)};
