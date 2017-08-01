@@ -17,7 +17,7 @@ private:
 public:
 
     /**
-     * @brief constructo
+     * @brief constructor
      * @param img image to be cropped
      * @param r cropping area
      */

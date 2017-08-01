@@ -21,7 +21,7 @@ TEST_CASE("Extracting workpiece"){
         roi.setTo(255); // white submatrix
         WorkPiece wp = WorkPieceExtractor().workpiece(mat);
         REQUIRE(wp.getM_point().x == 100);
-        REQUIRE(wp.getM_point().y == 400);
+        REQUIRE(wp.getM_point().y == 100);
         REQUIRE(wp.getM_height() == 300);
         REQUIRE(wp.getM_width() == 250);
     }
@@ -31,7 +31,7 @@ TEST_CASE("Extracting workpiece"){
         Image img = ImageLoader("prova2.png").getM_image();
         WorkPiece wp = WorkPieceExtractor().workpiece(img.getM_mat());
         REQUIRE(wp.getM_point().x == 100);
-        REQUIRE(wp.getM_point().y == 300);
+        REQUIRE(wp.getM_point().y == 150);
         REQUIRE(wp.getM_height() == 150);
         REQUIRE(wp.getM_width() == 250);
     }

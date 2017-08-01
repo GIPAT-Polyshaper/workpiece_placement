@@ -7,15 +7,26 @@
 namespace {
 
     /**
+     * @brief Remove extension and add Cut in the filename then add extension back
+     * @param filename name of the image
+     * @return name of the cropped image
+     */
+    std::string nameComposer(const std::string& filename) {
+        size_t lastdot = filename.find_last_of(".");
+        if (lastdot == std::string::npos) return filename;
+        return filename.substr(0, lastdot)+"Cut"+filename.substr(lastdot);
+    }
+
+    /**
     * @brief crop image
     * @param mat image matrix to be cropped
     * @param rect cropping rectangle
     * @return cropped image
     */
-    Image imageCut(const Mat &mat, const cv::Rect& rect){
+    Image imageCut(const Image & img, const cv::Rect& rect){
 
-        Mat croppedMat = mat(rect);
-        Image i = Image(croppedMat);
+        Mat croppedMat = img.getM_mat()(rect);
+        Image i = Image(nameComposer(img.getM_name()), croppedMat);
         return i;
 
     }
@@ -44,5 +55,5 @@ const Image &ImageCutter::getM_image() const {
 }
 
 ImageCutter::ImageCutter(const Image& img, const cv::Rect& r):
-    m_image(imageCut(img.getM_mat(), r))
+    m_image(imageCut(img, r))
 {}

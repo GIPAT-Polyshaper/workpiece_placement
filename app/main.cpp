@@ -9,15 +9,29 @@
 //TODO marker opencv e rettificazione d'immagine
 
 int main() {
-    Image img = ImageLoader("IMG_2216.JPG").getM_image();
-    img.showImg();
-    Rect r = WorkingAreaExtractor(img).getM_workingArea();
 
+    Image img = ImageLoader("prova.png").getM_image();
+    img.showImg();
+    //extracting working area
+    Rect r = WorkingAreaExtractor(img).getM_workingArea();
+    //cut original image
     Image imgCut = ImageCutter(img, r).getM_image();
     imgCut.showImg();
-//    WorkPiece wp = WorkPieceExtractor().workpiece(imgCut.getM_mat());
-//    Rect r1 = cv::Rect(wp.getM_point().x, wp.getM_point().y, wp.getM_width(),wp.getM_height());
-//    Image imgCutCut = ImageCutter(imgCut, r1).getM_image();
-//    imgCutCut.showImg();
+    cv::Mat matr = imgCut.getM_mat();
+
+//    cv::Mat colmat;
+//    cvtColor(matr, matr,COLOR_GRAY2BGR);
+//    imshow("mat1", matr);
+//    waitKey(0);
+
+    //extracting workpiece
+    WorkPiece wp = WorkPieceExtractor().workpiece(imgCut.getM_mat());
+    //create a bounding rectangle of workpiece
+    Rect r1 = cv::Rect(wp.getM_point().x, wp.getM_point().y, wp.getM_width(),wp.getM_height());
+    Image imgCutCut = ImageCutter(imgCut, r1).getM_image();
+    imgCutCut.showImg();
+    std::cout<< "x: " << wp.getM_point().x << std::endl;
+    std::cout<< "y: " << wp.getM_point().y << std::endl;
+
     return 0;
 }
