@@ -11,7 +11,7 @@ const cv::Point &WorkPiece::getM_point() const {
 
 
 float WorkPiece::getM_angle() const {
-    return m_angle;
+    return std::roundf(m_angle * 10)/10;
 }
 
 int WorkPiece::getM_width() const {
@@ -46,3 +46,13 @@ WorkPiece::WorkPiece(const cv::Point &m_point, float m_angle, int m_width, int m
                                                                                            m_angle(m_angle),
                                                                                            m_width(m_width),
                                                                                            m_height(m_height) {}
+
+WorkPiece::WorkPiece(const cv::RotatedRect rRect):m_angle(rRect.angle),
+                                                  m_width(rRect.size.width),
+                                                  m_height(rRect.size.height)
+{
+    cv::Point2f verts[4];
+    rRect.points(verts);
+    m_point = cv::Point(verts[0].x, verts[0].y);
+
+}

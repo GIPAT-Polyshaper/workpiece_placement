@@ -6,7 +6,7 @@
 #include "../wplib/WorkPieceExtractor.h"
 
 
-//TODO marker opencv e rettificazione d'immagine
+//TODO marker opencv e rettificazione d'immagine, http://docs.opencv.org/trunk/da/d6e/tutorial_py_geometric_transformations.html
 
 int main() {
 
@@ -27,7 +27,7 @@ int main() {
     //extracting workpiece
     WorkPiece wp = WorkPieceExtractor().workpiece(imgCut.getM_mat());
     //create a bounding rectangle of workpiece
-    Rect r1 = cv::Rect(wp.getM_point().x, wp.getM_point().y, wp.getM_width(),wp.getM_height());
+    Rect r1 = cv::Rect(wp.getM_point().x, wp.getM_point().y-wp.getM_height(), wp.getM_width(),wp.getM_height());
     Image imgCutCut = ImageCutter(imgCut, r1).getM_image();
     imgCutCut.showImg();
     std::cout<< "x: " << wp.getM_point().x << std::endl;

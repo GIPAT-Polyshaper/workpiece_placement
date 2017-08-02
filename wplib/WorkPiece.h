@@ -30,6 +30,12 @@ public:
     WorkPiece(const cv::Point &m_point = cv::Point(), float m_angle=0, int m_width=0, int m_height=0);
 
     /**
+     * @brief constructor
+     * @param rRect rotated rectangle
+     */
+    WorkPiece(const cv::RotatedRect rRect);
+
+    /**
      * @brief Get method for first point member
      * @return first point(top left) of working piece
      */

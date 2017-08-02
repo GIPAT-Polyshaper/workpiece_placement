@@ -9,6 +9,12 @@
 WorkPiece WorkPieceExtractor::workpiece(const cv::Mat &mat) {
     std::vector<std::vector<cv::Point>> contours = ContourDetector().contours(mat, false);
     std::vector<cv::Point> biggestContour = BiggestContourFinder().biggestContour(contours);
-    cv::Rect r = cv::boundingRect(biggestContour);
-    return WorkPiece(Point(r.tl().x, r.tl().y), 0.0, r.width, r.height);
+    cv::RotatedRect r1 = cv::minAreaRect(biggestContour);
+    std::cout<< "w:"<< r1.size.width<<","<<"h:"<< r1.size.height<< std::endl;
+
+//    Rect r =r1.boundingRect();
+//    cv::Rect r = cv::boundingRect(biggestContour);
+//    if(r.area()<r1.size.area())
+//    return WorkPiece(Point(r.tl().x, r.br().y), 0.0, r.width, r.height);
+    return WorkPiece(r1);
 }
