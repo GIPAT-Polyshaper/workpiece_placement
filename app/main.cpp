@@ -10,7 +10,7 @@
 
 int main() {
 
-    Image img = ImageLoader("prova.png").getM_image();
+    Image img = ImageLoader("../../sample_imgs/IMG_2216.JPG").getM_image();
     img.showImg();
     //extracting working area
     Rect r = WorkingAreaExtractor(img).getM_workingArea();
