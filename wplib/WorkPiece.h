@@ -12,22 +12,30 @@ class WorkPiece {
 
 private:
 
+    /**
+     * @brief center point
+     */
     cv::Point m_point;
+
+    /**
+     * @brief Angle of rotation
+     * @details The angle between y-axis and the long side
+     */
     float m_angle;
-    int m_width;
-    int m_height;
+    int m_longSide;
+    int m_shortSide;
 
 
 public:
 
     /**
      * @brief Constructor
-     * @param m_point Top left corner point
-     * @param m_angle the angle between working piece side and working area side
-     * @param m_width The width of the piece
-     * @param m_height The height of the piece
+     * @param point Top left corner point
+     * @param angle the angle between working piece long side and y-axis 0-180
+     * @param longSide The long side of the piece
+     * @param shortSide The short side of the piece
      */
-    WorkPiece(const cv::Point &m_point = cv::Point(), float m_angle=0, int m_width=0, int m_height=0);
+    WorkPiece(const cv::Point & point = cv::Point(), float angle=0, int longSide=0, int shortSide=0);
 
     /**
      * @brief constructor
@@ -41,7 +49,6 @@ public:
      */
     const cv::Point &getM_point() const;
 
-
     /**
      * @brief Get method for angle member
      * @return angle between working piece side and working area side
@@ -49,16 +56,16 @@ public:
     float getM_angle() const;
 
     /**
-     * @brief Get method for width member
-     * @return The width of the piece
+     * @brief Get method for long side member
+     * @return The long side of the piece
      */
-    int getM_width() const;
+    int getM_longSide() const;
     
     /**
-     * @brief Get method for height member
-     * @return The height of the piece
+     * @brief Get method for short side member
+     * @return The short side of the piece
      */
-    int getM_height() const;
+    int getM_shortSide() const;
 
     /**
      * @brief Set method for top right corner of the piece
@@ -74,16 +81,16 @@ public:
     void setM_angle(float m_angle);
 
     /**
-    * @brief Set method for height member
-    * @param m_width The width of the piece
+    * @brief Set method for long side member
+    * @param longSide The longSide of the piece
     */
-    void setM_width(int m_width);
+    void setM_longSide(int longSide);
 
     /**
-     * @brief Set method for height member
-     * @return The height of the piece
+     * @brief Set method for short side member
+     * @param shortSide The short side of the piece
      */
-    void setM_height(int m_height);
+    void setM_shortSide(int shortSide);
 
 };
 

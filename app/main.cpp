@@ -10,7 +10,7 @@
 
 int main() {
 
-    Image img = ImageLoader("../../sample_imgs/IMG_2216.JPG").getM_image();
+    Image img = ImageLoader("../../sample_imgs/IMG_2217.JPG").getM_image();
     img.showImg();
     //extracting working area
     Rect r = WorkingAreaExtractor(img).getM_workingArea();
@@ -27,9 +27,20 @@ int main() {
     //extracting workpiece
     WorkPiece wp = WorkPieceExtractor().workpiece(imgCut.getM_mat());
     //create a bounding rectangle of workpiece
-    Rect r1 = cv::Rect(wp.getM_point().x, wp.getM_point().y-wp.getM_height(), wp.getM_width(),wp.getM_height());
-    Image imgCutCut = ImageCutter(imgCut, r1).getM_image();
-    imgCutCut.showImg();
+    cv::RotatedRect rr = cv::RotatedRect(wp.getM_point(),cv::Size(wp.getM_longSide(),wp.getM_shortSide()), 90 + wp.getM_angle());
+//    Rect r1 = cv::Rect(wp.getM_point().x, wp.getM_point().y-wp.getM_height(), wp.getM_longSide(),wp.getM_height());
+//    Image imgCutCut = ImageCutter(imgCut, r).getM_image();
+//    imgCutCut.showImg();
+    cv::Mat m = imgCut.getM_mat();
+    cvtColor(m,m,COLOR_GRAY2BGR);
+    Point2f pts[4];
+    rr.points(pts);
+    for( int j = 0; j < 4; j++ )
+        line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255), 3, 8 );
+    namedWindow("workpiece", WINDOW_NORMAL);
+    imshow("workpiece", m);
+    waitKey(0);
+
     std::cout<< "x: " << wp.getM_point().x << std::endl;
     std::cout<< "y: " << wp.getM_point().y << std::endl;
 
