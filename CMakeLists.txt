@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 14)
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIR} )
 
+enable_testing()
+
 # Adding all subdirectories
 add_subdirectory(wplib)
 add_subdirectory(app)
