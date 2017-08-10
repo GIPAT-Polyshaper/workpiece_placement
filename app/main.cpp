@@ -10,8 +10,9 @@
 
 int main() {
 
-    Image img = ImageLoader("../../sample_imgs/prova3.jpg").getM_image();
+    Image img = ImageLoader("../../sample_imgs/IMG_2218.JPG").getM_image();
     img.showImg();
+
 
     //extracting working area
     Rect r = WorkingAreaExtractor(img).getM_workingArea();
@@ -32,7 +33,7 @@ int main() {
     Point2f pts[4];
     rr.points(pts);
     for( int j = 0; j < 4; j++ )
-        line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255), 3, 8 );
+        line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255), 2, 8 );
     namedWindow("workpiece", WINDOW_NORMAL);
     imshow("workpiece", m);
     waitKey(0);

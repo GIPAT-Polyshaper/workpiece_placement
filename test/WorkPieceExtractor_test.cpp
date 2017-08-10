@@ -65,7 +65,7 @@ TEST_CASE("Extracting workpiece"){
         Approx X_target = Approx(rRect.center.x).epsilon(0.01);
         Approx Y_target = Approx(rRect.center.y).epsilon(0.01);
         Approx SS_target = Approx(250).epsilon(0.02);
-        Approx LS_target = Approx(300).epsilon(0.01);
+        Approx LS_target = Approx(300).epsilon(0.02);
         Approx A_target = Approx(30).epsilon(0.01);
         CHECK(wp.getM_point().x == X_target);
         CHECK(wp.getM_point().y == Y_target);
@@ -93,7 +93,7 @@ TEST_CASE("Extracting workpiece"){
         CHECK(wp.getM_point().y == Y_target);
         CHECK(wp.getM_shortSide() == SS_target);
         CHECK(wp.getM_longSide() == LS_target);
-        bool angleCheck = wp.getM_angle() ==float(180) ||wp.getM_angle() ==float(0);
+        bool angleCheck = wp.getM_angle() ==float(180) || wp.getM_angle() ==float(0);
         CHECK(angleCheck);
     }
 

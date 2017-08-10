@@ -19,8 +19,10 @@ TEST_CASE("Extracting working area"){
         cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
         REQUIRE(wa.x == 50);
         REQUIRE(wa.y == 100);
-        REQUIRE(wa.width == 600);
-        REQUIRE(wa.height == 500);
+        Approx W_target = Approx(600).epsilon(0.01);
+        Approx H_target = Approx(500).epsilon(0.01);
+        REQUIRE(wa.width == W_target);
+        REQUIRE(wa.height == H_target);
     }
 
     SECTION("extracting working area from image not having frame"){
@@ -28,8 +30,10 @@ TEST_CASE("Extracting working area"){
         cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
         REQUIRE(wa.x == 1);
         REQUIRE(wa.y == 1);
-        REQUIRE(wa.width == 598);
-        REQUIRE(wa.height == 498);
+        Approx W_target = Approx(600).epsilon(0.01);
+        Approx H_target = Approx(500).epsilon(0.01);
+        REQUIRE(wa.width == W_target);
+        REQUIRE(wa.height == H_target);
     }
 
     SECTION("extracting working area from image having half frame"){
@@ -37,8 +41,10 @@ TEST_CASE("Extracting working area"){
         cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
         REQUIRE(wa.x == 1);
         REQUIRE(wa.y == 1);
-        REQUIRE(wa.width == 299);
-        REQUIRE(wa.height == 399);
+        Approx W_target = Approx(300).epsilon(0.01);
+        Approx H_target = Approx(400).epsilon(0.01);
+        REQUIRE(wa.width == W_target);
+        REQUIRE(wa.height == H_target);
     }
 
 }

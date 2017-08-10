@@ -6,9 +6,24 @@
 #include "ContourDetector.h"
 #include "BiggestContourFinder.h"
 
+
+
+
 namespace {
 
+
+    /**
+     * @brief on it will be calculate the resizing factor
+     */
+    const int maxMatWidth = 280;
+
+    /**
+     * @brief Find largest rectangle containing only zeros in an binary matrix
+     * @param src matrix where search largest rectangle
+     * @return the max area rectangle inside the matrix
+     */
     Rect findMaxRect(const Mat1b &src) {
+
         Mat1f W(src.rows, src.cols, float(0));
         Mat1f H(src.rows, src.cols, float(0));
 
@@ -38,9 +53,15 @@ namespace {
     }
 
 
+    /**
+     * @brief Find largest rotated rectangle containing only ones in an binary matrix
+     * @details code took from here: https://stackoverflow.com/questions/32674256/how-to-adapt-or-resize-a-rectangle-inside-an-object-without-including-or-with-a/32682512
+     * @param src2 matrix where search largest rectangle
+     * @return largest rotated rect
+     */
     RotatedRect largestRectInNonConvexPoly(const Mat1b &src2) {
 
-        float resizingFactor = src2.cols/float(250);
+        float resizingFactor = (float)src2.cols/(float)maxMatWidth;
         cv::Mat1b src;
         resize(src2, src, Size(), 1/resizingFactor, 1/resizingFactor, INTER_LINEAR);
         threshold(src, src, 0, 255,  CV_THRESH_BINARY | CV_THRESH_OTSU);
@@ -106,8 +127,6 @@ namespace {
         return rrect;
     }
 }
-
-
 
 
 WorkPiece WorkPieceExtractor::workpiece(const cv::Mat &mat) {
