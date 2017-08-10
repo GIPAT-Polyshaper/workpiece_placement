@@ -13,7 +13,7 @@ namespace {
      */
     std::string nameComposer(const std::string& filename) {
         size_t lastdot = filename.find_last_of(".");
-        if (lastdot == std::string::npos) return filename;
+        if (lastdot == std::string::npos) return filename+"Cut";
         return filename.substr(0, lastdot)+"Cut"+filename.substr(lastdot);
     }
 
