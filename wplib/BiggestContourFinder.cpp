@@ -19,5 +19,6 @@ std::vector<cv::Point> BiggestContourFinder::biggestContour(std::vector<std::vec
             largest_contour_index = i;
         }
     }
-    return contours[largest_contour_index];
+    std::vector<cv::Point> t = contours[largest_contour_index];
+    return t;
 }
