@@ -11,8 +11,10 @@
 
 
 //TODO marker opencv e rettificazione d'immagine, http://docs.opencv.org/trunk/da/d6e/tutorial_py_geometric_transformations.html
+//TODO controllare esistenza file di calibrazione
 
-
+//
+////use this main for camera calibration
 //int main(){
 //
 //    int numBoards = 0;
@@ -41,27 +43,34 @@ int main() {
 
     std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 
-    cv::Mat mCapture = CameraCapture(1).capturing();
+    cv::Mat mCapture = CameraCapture(0).capturing();
     if(mCapture.empty())
         return 0;
 
-    Image imgDist("captured", mCapture);
-    imgDist.showImg();
-
-    FileStorage fs;
-    fs.open("calibrationParams.xml", FileStorage::READ);
-
-    Mat intrinsic, distCoeffs;
-
-    fs["distortion_coefficients"] >> distCoeffs;
-    fs["intrinsic_matrix"] >> intrinsic;
-
-    Mat undistortMat;
-    undistort(imgDist.getM_mat(), undistortMat, intrinsic, distCoeffs);
-
-    Image img("img",undistortMat);
-
+    Image img("captured", mCapture);
     img.showImg();
+
+
+//    //undistorting image
+//    FileStorage fs;
+//    fs.open("calibrationParams.xml", FileStorage::READ);
+//
+//    if(!fs.isOpened())
+//        //TODO throw exeption?
+//        ;
+//    Mat intrinsic, distCoeffs;
+//
+//    fs["distortion_coefficients"] >> distCoeffs;
+//    fs["intrinsic_matrix"] >> intrinsic;
+//    (distCoeffs.empty() || intrinsic.empty() ? //TODO throw exeption?
+//      std::cout<<"ciao": std::cout << " pippo");
+//
+//    Mat undistortMat;
+//    undistort(imgDist.getM_mat(), undistortMat, intrinsic, distCoeffs);
+//
+//    Image img("img",undistortMat);
+
+
     //extracting working area
     Rect r = WorkingAreaExtractor(img).getM_workingArea();
 
@@ -76,6 +85,7 @@ int main() {
     //create a bounding rectangle of workpiece
     cv::RotatedRect rr = cv::RotatedRect(wp.getM_point(),cv::Size(wp.getM_longSide(),wp.getM_shortSide()), 90 + wp.getM_angle());
 
+    //draw workpiece bounds
     cv::Mat m = imgCut.getM_mat();
     cvtColor(m,m,COLOR_GRAY2BGR);
     Point2f pts[4];
@@ -86,11 +96,25 @@ int main() {
     imshow("workpiece", m);
     waitKey(0);
 
+    //print workpiece coordinates and dimensions
     std::cout<< "x: " << wp.getM_point().x << std::endl;
     std::cout<< "y: " << wp.getM_point().y << std::endl;
     std::cout<< "angle: " << wp.getM_angle() << std::endl;
-    std::cout<< "size: " << wp.getM_longSide()<<"x"<<wp.getM_shortSide();
+    std::cout<< "size: " << wp.getM_longSide()<<"x"<<wp.getM_shortSide() << std::endl;
 
+
+    //converting pixels in mm
+    // working area width in mm
+    float workingAreaWidth = 310.0;
+    // conversion factor
+    float pixelsPerMetric = float(r.width)/workingAreaWidth;
+    float xmm = wp.getM_point().x/pixelsPerMetric;
+    float ymm = wp.getM_point().y/pixelsPerMetric;
+    float sizemmX = wp.getM_longSide()/pixelsPerMetric;
+    float sizemmY = wp.getM_shortSide()/pixelsPerMetric;
+    std::cout<< "xmm: " << xmm << std::endl;
+    std::cout<< "ymm: " << ymm << std::endl;
+    std::cout<< "sizemm: " << sizemmX <<"x"<< sizemmY;
 
     return 0;
 }
