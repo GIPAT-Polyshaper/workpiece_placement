@@ -25,7 +25,7 @@ cv::Mat CameraCapture::capturing() {
 
     cv::namedWindow("Capturing",CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
 
-    while (1)
+    while (true)
     {
         cv::Mat frame;
 
@@ -38,7 +38,7 @@ cv::Mat CameraCapture::capturing() {
         }
 
         imshow("Capturing", frame); //show the frame in "MyVideo" window
-        char ch = cv::waitKey(30);
+        auto ch = static_cast<char>(cv::waitKey(30));
 
         if (ch == 's'){
             frame.copyTo(m);
