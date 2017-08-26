@@ -8,6 +8,7 @@
 #include "../wplib/BiggestContourFinder.h"
 #include "../wplib/ContourDetector.h"
 #include "../wplib/CameraCalibrator.h"
+#include "../wplib/PixelsToMetric.h"
 
 
 //TODO marker opencv e rettificazione d'immagine, http://docs.opencv.org/trunk/da/d6e/tutorial_py_geometric_transformations.html
@@ -43,7 +44,7 @@ int main() {
 
     std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 
-    cv::Mat mCapture = CameraCapture(0).capturing();
+    cv::Mat mCapture = CameraCapture(1).capturing();
     if(mCapture.empty())
         return 0;
 
@@ -102,19 +103,20 @@ int main() {
     std::cout<< "angle: " << wp.getM_angle() << std::endl;
     std::cout<< "size: " << wp.getM_longSide()<<"x"<<wp.getM_shortSide() << std::endl;
 
+    try {
+        //converting pixels in mm
+        PixelsToMetric ptm(r.width);
+        float xmm =ptm.MMConversion( wp.getM_point().x);
+        float ymm =ptm.MMConversion( wp.getM_point().y);
+        float sizemmX = ptm.MMConversion( wp.getM_longSide());
+        float sizemmY = ptm.MMConversion( wp.getM_shortSide());
+        std::cout<< "xmm: " << xmm << std::endl;
+        std::cout<< "ymm: " << ymm << std::endl;
+        std::cout<< "sizemm: " << sizemmX <<"x"<< sizemmY;
 
-    //converting pixels in mm
-    // working area width in mm
-    float workingAreaWidth = 310.0;
-    // conversion factor
-    float pixelsPerMetric = float(r.width)/workingAreaWidth;
-    float xmm = wp.getM_point().x/pixelsPerMetric;
-    float ymm = wp.getM_point().y/pixelsPerMetric;
-    float sizemmX = wp.getM_longSide()/pixelsPerMetric;
-    float sizemmY = wp.getM_shortSide()/pixelsPerMetric;
-    std::cout<< "xmm: " << xmm << std::endl;
-    std::cout<< "ymm: " << ymm << std::endl;
-    std::cout<< "sizemm: " << sizemmX <<"x"<< sizemmY;
+    } catch (const std::invalid_argument& ia) {
+        std::cerr << "Invalid argument: " << ia.what() << '\n';
+    }
 
     return 0;
 }
