@@ -21,8 +21,8 @@ TEST_CASE("Detecting contours inside image"){
         Approx X_target = Approx(500).epsilon(0.01);
         Approx Y_target = Approx(400).epsilon(0.01);
         REQUIRE(vec.size() == 1);
-        REQUIRE(vec[0][0].x == 1 );
-        REQUIRE(vec[0][0].y == 1 );
+        REQUIRE(vec[0][0].x == 0 );
+        REQUIRE(vec[0][0].y == 0 );
         REQUIRE(vec[0][2].x == X_target );
         REQUIRE(vec[0][2].y == Y_target );
     }
@@ -34,8 +34,8 @@ TEST_CASE("Detecting contours inside image"){
         Approx X_target = Approx(500).epsilon(0.01);
         Approx Y_target = Approx(400).epsilon(0.01);
         REQUIRE(vec.size() == 1);
-        REQUIRE(vec[0][0].x == 1 );
-        REQUIRE(vec[0][0].y == 1 );
+        REQUIRE(vec[0][0].x == 0 );
+        REQUIRE(vec[0][0].y == 0 );
         REQUIRE(vec[0][2].x == X_target );
         REQUIRE(vec[0][2].y == Y_target );
     }
@@ -60,8 +60,8 @@ TEST_CASE("Detecting contours inside image"){
         Approx X_target = Approx(700).epsilon(0.01);
         Approx Y_target = Approx(1100).epsilon(0.01);
         REQUIRE(vec.size() == 1);
-        REQUIRE(vec[0][0].x == 1 );
-        REQUIRE(vec[0][0].y == 1 );
+        REQUIRE(vec[0][0].x == 0 );
+        REQUIRE(vec[0][0].y == 0 );
         REQUIRE(vec[0][2].x == X_target );
         REQUIRE(vec[0][2].y == Y_target );
     }

@@ -28,8 +28,8 @@ TEST_CASE("Extracting working area"){
     SECTION("extracting working area from image not having frame"){
         Image img = ImageLoader(img_path+"prova2.png").getM_image();
         cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
-        REQUIRE(wa.x == 1);
-        REQUIRE(wa.y == 1);
+        REQUIRE(wa.x == 0);
+        REQUIRE(wa.y == 0);
         Approx W_target = Approx(600).epsilon(0.01);
         Approx H_target = Approx(500).epsilon(0.01);
         REQUIRE(wa.width == W_target);
@@ -39,8 +39,8 @@ TEST_CASE("Extracting working area"){
     SECTION("extracting working area from image having half frame"){
         Image img = ImageLoader(img_path+"workingArea300x400.png").getM_image();
         cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
-        REQUIRE(wa.x == 1);
-        REQUIRE(wa.y == 1);
+        REQUIRE(wa.x == 0);
+        REQUIRE(wa.y == 0);
         Approx W_target = Approx(300).epsilon(0.01);
         Approx H_target = Approx(400).epsilon(0.01);
         REQUIRE(wa.width == W_target);
