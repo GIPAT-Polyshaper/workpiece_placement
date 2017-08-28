@@ -11,7 +11,6 @@
 #include "../wplib/PixelsToMetric.h"
 
 
-//TODO marker opencv e rettificazione d'immagine, http://docs.opencv.org/trunk/da/d6e/tutorial_py_geometric_transformations.html
 //TODO controllare esistenza file di calibrazione
 
 //

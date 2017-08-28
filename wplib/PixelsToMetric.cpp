@@ -13,5 +13,9 @@ float PixelsToMetric::MMConversion(int pixels) {
 }
 
 PixelsToMetric::PixelsToMetric(int pxSizeReferenceObject)
-        :pixelsPerMetricRatio((mmKnownSize) ? float(pxSizeReferenceObject)/mmKnownSize : std::__throw_invalid_argument("The known size could not be zero"))
-{}
+{
+    if(mmKnownSize)
+        pixelsPerMetricRatio = float(pxSizeReferenceObject)/mmKnownSize;
+    else
+        std::__throw_invalid_argument("The known size could not be zero");
+}
