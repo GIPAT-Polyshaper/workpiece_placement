@@ -16,18 +16,18 @@ void CameraCalibrator::calibrate(int cameraId) {
 
     VideoCapture capture = VideoCapture(cameraId);
 
-    vector<vector<Point3f>> object_points;
-    vector<vector<Point2f>> image_points;
+    std::vector<std::vector<Point3f>> object_points;
+    std::vector<std::vector<Point2f>> image_points;
 
-    vector<Point2f> corners;
+    std::vector<Point2f> corners;
     int successes=0;
 
-    Mat image;
+    cv::Mat image;
 
-    Mat gray_image;
+    cv::Mat gray_image;
     capture >> image;
 
-    vector<Point3f> obj;
+    std::vector<Point3f> obj;
     for(int j=0;j<numSquares;j++)
         obj.emplace_back(j/numCornersHor, j%numCornersHor, 0.0f);
 
@@ -65,8 +65,8 @@ void CameraCalibrator::calibrate(int cameraId) {
     }
     Mat intrinsic = Mat(3, 3, CV_32FC1);
     Mat distCoeffs;
-    vector<Mat> rvecs;
-    vector<Mat> tvecs;
+    std::vector<cv::Mat> rvecs;
+    std::vector<cv::Mat> tvecs;
 
     intrinsic.ptr<float>(0)[0] = 1;
     intrinsic.ptr<float>(1)[1] = 1;

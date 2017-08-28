@@ -18,7 +18,7 @@ private:
     /**
      * where to write calibration parameters
      */
-    const string filename = "calibrationParams.xml";
+    const std::string filename = "calibrationParams.xml";
 
     /**
      * size of the chessboard

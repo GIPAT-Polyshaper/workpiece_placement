@@ -34,15 +34,15 @@ Image PerspectiveCorrector::correctedImage(const Image &img) {
 
     //Find contour
     Mat src = img.getM_mat();
-    const vector<Point> &bc = BiggestContourFinder().biggestContour(ContourDetector().contours(src, true));
-    vector<vector<Point>> p;
+    const std::vector<cv::Point> &bc = BiggestContourFinder().biggestContour(ContourDetector().contours(src, true));
+    std::vector<std::vector<cv::Point>> p;
     p.push_back(bc);
 
     //find aproximated polygon
-    vector<vector<Point> > contours_poly(1);
+    std::vector<std::vector<cv::Point> > contours_poly(1);
     approxPolyDP( Mat(bc), contours_poly[0], 30, true );
 
-    Rect boundRect(boundingRect(bc));
+    cv::Rect boundRect(boundingRect(bc));
 
     //keep original aspect ratio
     boundRect.height = static_cast<int>(boundRect.width / aspectRatio);

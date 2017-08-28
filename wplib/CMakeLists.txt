@@ -3,7 +3,7 @@ set(SOURCE_FILES Image.h Image.cpp WorkPiece.cpp WorkPiece.h ImageLoader.cpp Ima
         ImageCutter.cpp ImageCutter.h BiggestContourFinder.cpp BiggestContourFinder.h
         WorkPieceExtractor.cpp WorkPieceExtractor.h CameraCapture.cpp CameraCapture.h
         PerspectiveCorrector.cpp PerspectiveCorrector.h CameraCalibrator.cpp CameraCalibrator.h
-        PixelsToMetric.cpp PixelsToMetric.h)
+        PixelsToMetric.cpp PixelsToMetric.h GcodeUpdater.cpp GcodeUpdater.h)
 
 
 add_library(wplib STATIC ${SOURCE_FILES})

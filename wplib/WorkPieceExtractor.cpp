@@ -67,7 +67,7 @@ namespace {
         threshold(src, src, 0, 255,  CV_THRESH_BINARY | CV_THRESH_OTSU);
 
         // Create a matrix big enough to not lose points during rotation
-        vector<Point> ptz;
+        std::vector<Point> ptz;
         findNonZero(src, ptz);
         Rect bbox = boundingRect(ptz);
         int maxdim = max(bbox.width, bbox.height);
@@ -87,7 +87,7 @@ namespace {
             warpAffine(work, rotated, R, work.size());
 
             // Keep the crop with the polygon
-            vector<Point> pts;
+            std::vector<Point> pts;
             findNonZero(rotated, pts);
             Rect box = boundingRect(pts);
             Mat1b crop = rotated(box).clone();
@@ -107,9 +107,9 @@ namespace {
 
         // Apply the inverse rotation
         Mat Rinv = getRotationMatrix2D(Point(maxdim, maxdim), -bestAngle, 1);
-        vector<Point> rectPoints{bestRect.tl(), Point(bestRect.x + bestRect.width, bestRect.y), bestRect.br(),
+        std::vector<Point> rectPoints{bestRect.tl(), Point(bestRect.x + bestRect.width, bestRect.y), bestRect.br(),
                                  Point(bestRect.x, bestRect.y + bestRect.height)};
-        vector<Point> rotatedRectPoints;
+        std::vector<Point> rotatedRectPoints;
         transform(rectPoints, rotatedRectPoints, Rinv);
 
         // Apply the reverse translations
