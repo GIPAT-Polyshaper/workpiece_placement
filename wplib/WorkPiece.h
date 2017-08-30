@@ -41,7 +41,7 @@ public:
      * @brief constructor
      * @param rRect rotated rectangle
      */
-    WorkPiece(const cv::RotatedRect rRect);
+    WorkPiece(const cv::RotatedRect& rRect);
 
     /**
      * @brief Get method for first point member

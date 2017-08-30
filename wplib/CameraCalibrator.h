@@ -55,7 +55,7 @@ private:
      * @param distCoeffs Distortion coefficent Matrix
      * @param imageSize Size of the image
      */
-    void saveParams(Mat &intrinsic, Mat &distCoeffs, Size &imageSize) const;
+    void saveParams(const Mat &intrinsic, const Mat &distCoeffs, const Size &imageSize) const;
 };
 
 

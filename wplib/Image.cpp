@@ -33,7 +33,7 @@ const Mat &Image::getM_mat() const {
     return m_mat;
 }
 
-void Image::showImg() {
+void Image::showImg() const {
     namedWindow(this->m_name, WINDOW_NORMAL);
     imshow(this->m_name, this->m_mat);
     std::cout<<"Press a key to continue"<<std::endl;

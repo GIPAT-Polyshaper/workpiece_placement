@@ -4,7 +4,8 @@
 
 #include "BiggestContourFinder.h"
 
-std::vector<cv::Point> BiggestContourFinder::biggestContour(std::vector<std::vector<cv::Point>> contours) {
+std::vector<cv::Point> BiggestContourFinder::biggestContour(const std::vector<std::vector<cv::Point>>& contours) const
+{
     std::vector<cv::Point> p;
     if(contours.size()==0)
         throw std::invalid_argument("Empty vector");

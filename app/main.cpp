@@ -9,6 +9,7 @@
 #include "../wplib/ContourDetector.h"
 #include "../wplib/CameraCalibrator.h"
 #include "../wplib/PixelsToMetric.h"
+#include "../wplib/GcodeUpdater.h"
 
 
 //TODO controllare esistenza file di calibrazione
@@ -117,5 +118,30 @@ int main() {
         std::cerr << "Invalid argument: " << ia.what() << '\n';
     }
 
+
+    std::ifstream gcode;
+    auto output = std::ostringstream();
+
+    gcode.open("../../sample_gcode/output.ngc", std::ifstream::in );
+
+    if(gcode.is_open())
+        std::cout << "ok" << std::endl;
+    else
+        std::cout << "no" << std::endl;
+
+    auto gcodeUpdater = GcodeUpdater(gcode, output);
+
+    while (gcodeUpdater.hasNextPoint()) {
+        GcodeUpdater::Point p = gcodeUpdater.nextPoint();
+
+        p[0] += 1;
+        p[1] += 1;
+        p[2] += 1;
+        p[3] += 1;
+
+        gcodeUpdater.updatePoint(p);
+    }
+    std::cout << output.str()<< std::endl;
+    gcode.close();
     return 0;
 }

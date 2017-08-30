@@ -61,7 +61,7 @@ public:
     /**
      * @brief shows the image in a fixed size window
      */
-    void showImg();
+    void showImg() const;
 
     /**
      * @brief get method for matrix member

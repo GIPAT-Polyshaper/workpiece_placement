@@ -78,7 +78,7 @@ void CameraCalibrator::calibrate(int cameraId) {
 }
 
 
-void CameraCalibrator::saveParams(cv::Mat &intrinsic, cv::Mat &distCoeffs, Size &imageSize) const                        //Write serialization for this class
+void CameraCalibrator::saveParams(const cv::Mat &intrinsic ,const cv::Mat &distCoeffs, const Size &imageSize) const                        //Write serialization for this class
 {
     cv::FileStorage fs(this->filename, cv::FileStorage::WRITE);
 

@@ -48,7 +48,7 @@ WorkPiece::WorkPiece(const cv::Point &point, float angle, int side1, int side2) 
                                                                                            m_longSide(side1 > side2 ? side1 : side2),
                                                                                            m_shortSide(side1 < side2 ? side1 : side2) {}
 
-WorkPiece::WorkPiece(const cv::RotatedRect rRect):m_angle(rRect.size.width < rRect.size.height ? rRect.angle + 180 : rRect.angle + 90),
+WorkPiece::WorkPiece(const cv::RotatedRect& rRect):m_angle(rRect.size.width < rRect.size.height ? rRect.angle + 180 : rRect.angle + 90),
                                                   m_longSide(rRect.size.width >= rRect.size.height ? rRect.size.width : rRect.size.height),
                                                   m_shortSide(rRect.size.height <= rRect.size.width ? rRect.size.height : rRect.size.width),
                                                   m_point(rRect.center.x,rRect.center.y)
