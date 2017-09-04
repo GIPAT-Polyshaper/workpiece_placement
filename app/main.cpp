@@ -10,6 +10,7 @@
 #include "../wplib/CameraCalibrator.h"
 #include "../wplib/PixelsToMetric.h"
 #include "../wplib/GcodeUpdater.h"
+#include "../wplib/GcodePointUpdater.h"
 
 
 //TODO controllare esistenza file di calibrazione
@@ -25,7 +26,7 @@
 //    scanf("%d", &numCornersHor);
 //
 //    printf("Enter number of corners along height: ");
-//    scanf("%d", &numCornersVer);
+//    scanf("%d", &numCornersVer);//todo change to cin
 //
 //    printf("Enter number of boards: ");
 //    scanf("%d", &numBoards);
@@ -40,15 +41,15 @@
 int main() {
 
 
-//    Image img = ImageLoader("../../sample_imgs/prova.png").getM_image();
+    Image img = ImageLoader("../../sample_imgs/prova.png").getM_image();
 
-    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
-
-    cv::Mat mCapture = CameraCapture(1).capturing();
-    if(mCapture.empty())
-        return 0;
-
-    Image img("captured", mCapture);
+//    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
+//
+//    cv::Mat mCapture = CameraCapture(1).capturing();
+//    if(mCapture.empty())
+//        return 0;
+//
+//    Image img("captured", mCapture);
     img.showImg();
 
 
@@ -84,32 +85,44 @@ int main() {
     WorkPiece wp = WorkPieceExtractor().workpiece(imgCut.getM_mat());
 
     //create a bounding rectangle of workpiece
-    cv::RotatedRect rr = cv::RotatedRect(wp.getM_point(),cv::Size(wp.getM_longSide(),wp.getM_shortSide()), 90 + wp.getM_angle());
+    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getM_longSide(),wp.getM_shortSide()), 90 + wp.getM_angle());
 
     //draw workpiece bounds
     cv::Mat m = imgCut.getM_mat();
     cvtColor(m,m,COLOR_GRAY2BGR);
-    Point2f pts[4];
-    rr.points(pts);
+    const Point *pts = wp.getVertices();
+//    rr.points(pts);
     for( int j = 0; j < 4; j++ )
         line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255), 2, 8 );
     namedWindow("workpiece", WINDOW_NORMAL);
     imshow("workpiece", m);
     waitKey(0);
 
+
     //print workpiece coordinates and dimensions
-    std::cout<< "x: " << wp.getM_point().x << std::endl;
-    std::cout<< "y: " << wp.getM_point().y << std::endl;
+    std::cout<< "x: " << wp.getCenterPoint().x << std::endl;
+    std::cout<< "y: " << wp.getCenterPoint().y << std::endl;
     std::cout<< "angle: " << wp.getM_angle() << std::endl;
     std::cout<< "size: " << wp.getM_longSide()<<"x"<<wp.getM_shortSide() << std::endl;
 
+    cv::Point2f verticesMm[4];
+    float xmm;
+    float ymm;
+    float sizemmX;
+    float sizemmY;
+    float workingAreaHeight;
     try {
         //converting pixels in mm
         PixelsToMetric ptm(r.width);
-        float xmm =ptm.MMConversion( wp.getM_point().x);
-        float ymm =ptm.MMConversion( wp.getM_point().y);
-        float sizemmX = ptm.MMConversion( wp.getM_longSide());
-        float sizemmY = ptm.MMConversion( wp.getM_shortSide());
+        xmm = ptm.mMConversion(wp.getCenterPoint().x);
+        ymm = ptm.mMConversion(wp.getCenterPoint().y);
+        workingAreaHeight = ptm.mMConversion(r.height);
+        for(int i = 0; i < 4; i++)
+        {
+            verticesMm[i] = cv::Point2f(ptm.mMConversion(wp.getVertices()[i].x), ptm.mMConversion(wp.getVertices()[i].y));
+        }
+        sizemmX = ptm.mMConversion(wp.getM_longSide());
+        sizemmY = ptm.mMConversion(wp.getM_shortSide());
         std::cout<< "xmm: " << xmm << std::endl;
         std::cout<< "ymm: " << ymm << std::endl;
         std::cout<< "sizemm: " << sizemmX <<"x"<< sizemmY;
@@ -119,29 +132,39 @@ int main() {
     }
 
 
-    std::ifstream gcode;
+//    std::ifstream gcode;
     auto output = std::ostringstream();
 
-    gcode.open("../../sample_gcode/output.ngc", std::ifstream::in );
+//    gcode.open("../../sample_gcode/output.ngc", std::ifstream::in );
+    auto input = std::istringstream("Dummy\nG00 X10\nMore dummyStuffs\nG01 Z10 Y67\nfinal dummy stuff");
 
-    if(gcode.is_open())
-        std::cout << "ok" << std::endl;
-    else
-        std::cout << "no" << std::endl;
+//
+//    if(gcode.is_open())
+//        std::cout << "ok" << std::endl;
+//    else
+//        std::cout << "no" << std::endl;
 
-    auto gcodeUpdater = GcodeUpdater(gcode, output);
+    auto gcodeUpdater = GcodeUpdater(input, output);
+
+    //important! respect the order (x,y)
+    cv::Size gcodeSize(100,150);
+
+    GcodePointUpdater gcpu(gcodeSize, verticesMm, wp.getM_angle(), workingAreaHeight);
 
     while (gcodeUpdater.hasNextPoint()) {
         GcodeUpdater::Point p = gcodeUpdater.nextPoint();
 
-        p[0] += 1;
-        p[1] += 1;
-        p[2] += 1;
-        p[3] += 1;
 
-        gcodeUpdater.updatePoint(p);
+        GcodeUpdater::Point newP = gcpu.elaborate(p, 80);
+//        p[0] += 1;
+//        p[1] += 1;
+//        p[2] += 1;
+//        p[3] += 1;
+
+        p;
+        gcodeUpdater.updatePoint(newP);
     }
     std::cout << output.str()<< std::endl;
-    gcode.close();
+//    gcode.close();
     return 0;
 }

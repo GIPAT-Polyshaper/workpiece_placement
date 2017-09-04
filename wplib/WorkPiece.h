@@ -15,7 +15,15 @@ private:
     /**
      * @brief center point
      */
-    cv::Point m_point;
+    cv::Point m_centerPoint;
+
+    /**
+     * @brief vertices of the workpiece
+     */
+    cv::Point m_vertices[4] = {cv::Point(0,0), cv::Point(0,0), cv::Point(0,0), cv::Point(0,0)};
+
+
+private:
 
     /**
      * @brief Angle of rotation
@@ -47,7 +55,7 @@ public:
      * @brief Get method for first point member
      * @return first point(top left) of working piece
      */
-    const cv::Point &getM_point() const;
+    const cv::Point &getCenterPoint() const;
 
     /**
      * @brief Get method for angle member
@@ -68,11 +76,17 @@ public:
     int getM_shortSide() const;
 
     /**
-     * @brief Set method for top right corner of the piece
+     * @brief Get method for vertices member
+     * @return Array of point representing vertices of workpiece
+     */
+    const cv::Point *getVertices() const;
+
+    /**
+     * @brief Set method for the center point of the piece
      * @param x X coordinate of the point
      * @param y Y coordinate of the point
      */
-    void setM_point(int x, int y);
+    void setCenterPoint(int x, int y);
 
     /**
      * @brief Set method for angle member

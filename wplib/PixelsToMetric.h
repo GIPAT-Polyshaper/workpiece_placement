@@ -30,7 +30,7 @@ public:
      * @throw invalid argument exception if the provided dimension is negative
      * @return dimension in mm
      */
-    float MMConversion(int pixels);
+    float mMConversion(int pixels);
 
     /**
      * @brief Constructor

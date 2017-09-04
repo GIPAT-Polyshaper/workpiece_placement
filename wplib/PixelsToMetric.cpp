@@ -5,7 +5,7 @@
 #include <bits/functexcept.h>
 #include "PixelsToMetric.h"
 
-float PixelsToMetric::MMConversion(int pixels) {
+float PixelsToMetric::mMConversion(int pixels) {
     if(pixels>0)
     return pixels/pixelsPerMetricRatio;
     else
