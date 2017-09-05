@@ -26,11 +26,19 @@ private:
 private:
 
     /**
-     * @brief Angle of rotation
+     * @brief Angle of rotation [0,180)
      * @details The angle between y-axis and the long side
      */
     float m_angle;
+
+    /**
+     * @brief longest side of workpiece
+     */
     int m_longSide;
+
+    /**
+     * @brief shortest side of workpiece
+     */
     int m_shortSide;
 
 
@@ -61,19 +69,19 @@ public:
      * @brief Get method for angle member
      * @return angle between working piece side and working area side
      */
-    float getM_angle() const;
+    float getAngle() const;
 
     /**
      * @brief Get method for long side member
      * @return The long side of the piece
      */
-    int getM_longSide() const;
+    int getLongSide() const;
     
     /**
      * @brief Get method for short side member
      * @return The short side of the piece
      */
-    int getM_shortSide() const;
+    int getShortSide() const;
 
     /**
      * @brief Get method for vertices member
@@ -92,19 +100,19 @@ public:
      * @brief Set method for angle member
      * @param m_angle the angle between working piece side and working area side
      */
-    void setM_angle(float m_angle);
+    void setAngle(float m_angle);
 
     /**
     * @brief Set method for long side member
     * @param longSide The longSide of the piece
     */
-    void setM_longSide(int longSide);
+    void setLongSide(int longSide);
 
     /**
      * @brief Set method for short side member
      * @param shortSide The short side of the piece
      */
-    void setM_shortSide(int shortSide);
+    void setShortSide(int shortSide);
 
 };
 

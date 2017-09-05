@@ -28,8 +28,8 @@ TEST_CASE("Extracting workpiece"){
         Approx LS_target = Approx(300).epsilon(0.01);
         REQUIRE(wp.getCenterPoint().x == X_target);
         REQUIRE(wp.getCenterPoint().y == Y_target);
-        REQUIRE(wp.getM_shortSide() == SS_target);
-        REQUIRE(wp.getM_longSide() == LS_target);
+        REQUIRE(wp.getShortSide() == SS_target);
+        REQUIRE(wp.getLongSide() == LS_target);
 
     }
 
@@ -43,8 +43,8 @@ TEST_CASE("Extracting workpiece"){
         Approx LS_target = Approx(250).epsilon(0.01);
         REQUIRE(wp.getCenterPoint().y == Y_target);
         REQUIRE(wp.getCenterPoint().x  == X_target);
-        REQUIRE(wp.getM_shortSide() == SS_target);
-        REQUIRE(wp.getM_longSide() == LS_target);
+        REQUIRE(wp.getShortSide() == SS_target);
+        REQUIRE(wp.getLongSide() == LS_target);
 
     }
 
@@ -69,9 +69,9 @@ TEST_CASE("Extracting workpiece"){
         Approx A_target = Approx(30).epsilon(0.01);
         CHECK(wp.getCenterPoint().x == X_target);
         CHECK(wp.getCenterPoint().y == Y_target);
-        CHECK(wp.getM_shortSide() == SS_target);
-        CHECK(wp.getM_longSide() == LS_target);
-        CHECK(wp.getM_angle() ==A_target);
+        CHECK(wp.getShortSide() == SS_target);
+        CHECK(wp.getLongSide() == LS_target);
+        CHECK(wp.getAngle() ==A_target);
 
     }
 
@@ -91,9 +91,9 @@ TEST_CASE("Extracting workpiece"){
         Approx LS_target = Approx(250).epsilon(0.01);
         CHECK(wp.getCenterPoint().x == X_target);
         CHECK(wp.getCenterPoint().y == Y_target);
-        CHECK(wp.getM_shortSide() == SS_target);
-        CHECK(wp.getM_longSide() == LS_target);
-        bool angleCheck = wp.getM_angle() ==float(180) || wp.getM_angle() ==float(0);
+        CHECK(wp.getShortSide() == SS_target);
+        CHECK(wp.getLongSide() == LS_target);
+        bool angleCheck = wp.getAngle() ==float(180) || wp.getAngle() ==float(0);
         CHECK(angleCheck);
     }
 

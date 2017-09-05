@@ -41,7 +41,7 @@
 int main() {
 
 
-    Image img = ImageLoader("../../sample_imgs/prova.png").getM_image();
+    Image img = ImageLoader("../../sample_imgs/rect12.png").getM_image();
 
 //    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 //
@@ -85,7 +85,8 @@ int main() {
     WorkPiece wp = WorkPieceExtractor().workpiece(imgCut.getM_mat());
 
     //create a bounding rectangle of workpiece
-    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getM_longSide(),wp.getM_shortSide()), 90 + wp.getM_angle());
+    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()), 90 +
+            wp.getAngle());
 
     //draw workpiece bounds
     cv::Mat m = imgCut.getM_mat();
@@ -102,8 +103,8 @@ int main() {
     //print workpiece coordinates and dimensions
     std::cout<< "x: " << wp.getCenterPoint().x << std::endl;
     std::cout<< "y: " << wp.getCenterPoint().y << std::endl;
-    std::cout<< "angle: " << wp.getM_angle() << std::endl;
-    std::cout<< "size: " << wp.getM_longSide()<<"x"<<wp.getM_shortSide() << std::endl;
+    std::cout<< "angle: " << wp.getAngle() << std::endl;
+    std::cout<< "size: " << wp.getLongSide()<<"x"<< wp.getShortSide() << std::endl;
 
     cv::Point2f verticesMm[4];
     float xmm;
@@ -121,8 +122,8 @@ int main() {
         {
             verticesMm[i] = cv::Point2f(ptm.mMConversion(wp.getVertices()[i].x), ptm.mMConversion(wp.getVertices()[i].y));
         }
-        sizemmX = ptm.mMConversion(wp.getM_longSide());
-        sizemmY = ptm.mMConversion(wp.getM_shortSide());
+        sizemmX = ptm.mMConversion(wp.getLongSide());
+        sizemmY = ptm.mMConversion(wp.getShortSide());
         std::cout<< "xmm: " << xmm << std::endl;
         std::cout<< "ymm: " << ymm << std::endl;
         std::cout<< "sizemm: " << sizemmX <<"x"<< sizemmY;
@@ -149,7 +150,7 @@ int main() {
     //important! respect the order (x,y)
     cv::Size gcodeSize(100,150);
 
-    GcodePointUpdater gcpu(gcodeSize, verticesMm, wp.getM_angle(), workingAreaHeight);
+    GcodePointUpdater gcpu(gcodeSize, verticesMm, wp.getAngle(), workingAreaHeight);
 
     while (gcodeUpdater.hasNextPoint()) {
         GcodeUpdater::Point p = gcodeUpdater.nextPoint();

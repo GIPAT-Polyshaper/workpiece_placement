@@ -15,11 +15,11 @@ TEST_CASE("WorkPiece"){
 
     SECTION("Creating empty workpiece") {
         WorkPiece wp;
-        REQUIRE(wp.getM_angle() == 0);
-        REQUIRE(wp.getM_shortSide() == 0);
+        REQUIRE(wp.getAngle() == 0);
+        REQUIRE(wp.getShortSide() == 0);
         REQUIRE(wp.getCenterPoint().x == 0);
         REQUIRE(wp.getCenterPoint().y == 0);
-        REQUIRE(wp.getM_longSide() == 0);
+        REQUIRE(wp.getLongSide() == 0);
         int i;
         for(i==0; i < 4; i++){
             REQUIRE(wp.getVertices()[0] == cv::Point(0,0));
@@ -29,15 +29,15 @@ TEST_CASE("WorkPiece"){
         SECTION("Setting workpiece members")
         {
             float f = 45.5;
-            wp.setM_angle(f);
-            wp.setM_shortSide(50);
+            wp.setAngle(f);
+            wp.setShortSide(50);
             wp.setCenterPoint(150, 160);
-            wp.setM_longSide(60);
-            REQUIRE(wp.getM_angle() == 45.5);
-            REQUIRE(wp.getM_shortSide() == 50);
+            wp.setLongSide(60);
+            REQUIRE(wp.getAngle() == 45.5);
+            REQUIRE(wp.getShortSide() == 50);
             REQUIRE(wp.getCenterPoint().x == 150);
             REQUIRE(wp.getCenterPoint().y == 160);
-            REQUIRE(wp.getM_longSide() == 60);
+            REQUIRE(wp.getLongSide() == 60);
         }
 
     }
@@ -59,7 +59,7 @@ TEST_CASE("WorkPiece"){
         Approx point3X = Approx(130).epsilon(0.01);
         Approx point3Y = Approx(260).epsilon(0.01);
 
-        REQUIRE(wp.getM_angle() == float(126.3));
+        REQUIRE(wp.getAngle() == float(126.3));
         CHECK(vertices[0].x == point0X);
         CHECK(vertices[0].y == point0Y);
         CHECK(vertices[1].x == point1X);
@@ -73,11 +73,11 @@ TEST_CASE("WorkPiece"){
 //    SECTION("Creating working piece"){
 //        float f = 56.3;
 //        WorkPiece wp = WorkPiece(cv::Point(380, 350), f, 400, 500);
-//        REQUIRE(wp.getM_angle() == f);
-//        REQUIRE(wp.getM_shortSide() == 400);
+//        REQUIRE(wp.getAngle() == f);
+//        REQUIRE(wp.getShortSide() == 400);
 //        REQUIRE(wp.getCenterPoint().x == 380);
 //        REQUIRE(wp.getCenterPoint().y == 350);
-//        REQUIRE(wp.getM_longSide() == 500);
+//        REQUIRE(wp.getLongSide() == 500);
 //    }
 
 }

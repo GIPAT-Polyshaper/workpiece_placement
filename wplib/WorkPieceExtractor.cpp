@@ -7,8 +7,6 @@
 #include "BiggestContourFinder.h"
 
 
-
-
 namespace {
 
 
@@ -147,10 +145,6 @@ WorkPiece WorkPieceExtractor::workpiece(const cv::Mat &mat) {
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     std::cout<< "Time elapsed largestRectInNonConvexPoly function: "<<elapsed_secs << " sec"<<std::endl;
 
-//    Rect r =r1.boundingRect();
-//    cv::Rect r = cv::boundingRect(biggestContour);
-//    if(r.area()<r1.size.area())
-//    return WorkPiece(Point(r.tl().x, r.br().y), 0.0, r.width, r.height);
     return WorkPiece(r2);
 }
 

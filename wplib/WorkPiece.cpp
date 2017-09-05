@@ -11,15 +11,15 @@ const cv::Point &WorkPiece::getCenterPoint() const {
 }
 
 
-float WorkPiece::getM_angle() const {
+float WorkPiece::getAngle() const {
     return std::roundf(m_angle * 10)/10;
 }
 
-int WorkPiece::getM_longSide() const {
+int WorkPiece::getLongSide() const {
     return m_longSide;
 }
 
-int WorkPiece::getM_shortSide() const {
+int WorkPiece::getShortSide() const {
     return m_shortSide;
 }
 
@@ -32,17 +32,17 @@ void WorkPiece::setCenterPoint(int x, int y) {
     WorkPiece::m_centerPoint.y = y;
 }
 
-void WorkPiece::setM_angle(float m_angle) {
+void WorkPiece::setAngle(float m_angle) {
     WorkPiece::m_angle = m_angle;
 }
 
 
-void WorkPiece::setM_longSide(int longSide) {
+void WorkPiece::setLongSide(int longSide) {
     WorkPiece::m_longSide = longSide;
 }
 
 
-void WorkPiece::setM_shortSide(int shortSide) {
+void WorkPiece::setShortSide(int shortSide) {
     WorkPiece::m_shortSide = shortSide;
 }
 
