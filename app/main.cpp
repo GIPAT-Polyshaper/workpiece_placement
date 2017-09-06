@@ -41,7 +41,7 @@
 int main() {
 
 
-    Image img = ImageLoader("../../sample_imgs/rect12.png").getM_image();
+    Image img = ImageLoader("../../sample_imgs/prova.png").getM_image();
 
 //    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 //
@@ -77,7 +77,7 @@ int main() {
     Rect r = WorkingAreaExtractor(img).getM_workingArea();
 
     //cut original image
-    Image imgCut = ImageCutter(img, r).getM_image();
+    Image imgCut = ImageCutter().elaborate(img, r);
 
     imgCut.showImg();
 
@@ -111,13 +111,13 @@ int main() {
     float ymm;
     float sizemmX;
     float sizemmY;
-    float workingAreaHeight;
+    float workingAreaHeightMm;
     try {
         //converting pixels in mm
         PixelsToMetric ptm(r.width);
         xmm = ptm.mMConversion(wp.getCenterPoint().x);
         ymm = ptm.mMConversion(wp.getCenterPoint().y);
-        workingAreaHeight = ptm.mMConversion(r.height);
+        workingAreaHeightMm = ptm.mMConversion(r.height);
         for(int i = 0; i < 4; i++)
         {
             verticesMm[i] = cv::Point2f(ptm.mMConversion(wp.getVertices()[i].x), ptm.mMConversion(wp.getVertices()[i].y));
@@ -148,22 +148,17 @@ int main() {
     auto gcodeUpdater = GcodeUpdater(input, output);
 
     //important! respect the order (x,y)
-    cv::Size gcodeSize(100,150);
+    cv::Size gcodeSize(150,100);
 
-    GcodePointUpdater gcpu(gcodeSize, verticesMm, wp.getAngle(), workingAreaHeight);
+    GcodePointUpdater gcpu(gcodeSize, verticesMm, wp.getAngle(), workingAreaHeightMm);
 
-    while (gcodeUpdater.hasNextPoint()) {
+    while (gcodeUpdater.hasNextPoint())
+    {
+
         GcodeUpdater::Point p = gcodeUpdater.nextPoint();
-
-
         GcodeUpdater::Point newP = gcpu.elaborate(p, 80);
-//        p[0] += 1;
-//        p[1] += 1;
-//        p[2] += 1;
-//        p[3] += 1;
-
-        p;
         gcodeUpdater.updatePoint(newP);
+
     }
     std::cout << output.str()<< std::endl;
 //    gcode.close();

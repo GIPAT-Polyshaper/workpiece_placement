@@ -10,24 +10,40 @@
 
 class ImageCutter {
 
-private:
-
-    Image m_image;
-
 public:
 
     /**
-     * @brief constructor
-     * @param img image to be cropped
-     * @param r cropping area
+     * @brief Crops an image based on the rectangle passed
+     * @param img Image to be cropped
+     * @param r Define the cropping area
+     * @return Cropped image
      */
-    ImageCutter(const Image& img, const cv::Rect & r);
+    const Image elaborate(const Image &img, const Rect &r);
+
+private:
 
     /**
-     * @brief Get method image member
-     * @return
+     * @brief Remove extension and add Cut in the filename then add extension back
+     * @param filename name of the image
+     * @return name of the cropped image
      */
-    const Image &getM_image() const;
+    std::string nameComposer(const std::string& filename);
+
+    /**
+     * @brief crop image
+     * @param mat image to be cropped
+     * @param rect cropping rectangle
+     * @return cropped image
+     */
+    Image imageCut(const Image & img, const cv::Rect& rect);
+
+    /**
+     * @brief crop image
+     * @param mat image matrix to be cropped
+     * @param area cropping area
+     * @return cropped image
+     */
+    Image imageCut(const Mat &mat, std::vector<std::vector<cv::Point>> area);
 
 };
 

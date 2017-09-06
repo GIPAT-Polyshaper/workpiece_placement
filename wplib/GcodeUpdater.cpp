@@ -45,7 +45,7 @@ void GcodeUpdater::findNextPoint()
   m_firstPointFound = true;
   m_hasNextPoint = false;
 
-  while(!m_input.eof() && !m_hasNextPoint) {
+  while(!m_input.eof() && !m_hasNextPoint && m_input.good()) {
     std::string buf;
     std::getline(m_input, buf);
 

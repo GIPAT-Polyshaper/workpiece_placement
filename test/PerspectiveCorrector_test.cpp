@@ -11,14 +11,14 @@
 #include "test_config.h"
 #include "../wplib/PerspectiveCorrector.h"
 
-//TODO pensare un test valido
 
-TEST_CASE("Perspective correction") {
+TEST_CASE("Perspective correction")
+{
 
     Image img = ImageLoader(img_path + "perspective.png").getM_image();
-    img.showImg();
     PerspectiveCorrector pr;
-    Image imgcorrected = pr.correctedImage(img);
-    imgcorrected.showImg();
+    Image imgCorrected = pr.correctedImage(img);
+    Image comparisonImage = ImageLoader(img_path + "imageCorrected.jpg").getM_image();
+    REQUIRE(imgCorrected.isEqualTo(comparisonImage));
 
 }
