@@ -13,7 +13,7 @@
 
 TEST_CASE("WorkPiece"){
 
-    SECTION("Creating empty workpiece") {
+    SECTION("Creating empty elaborate") {
         WorkPiece wp;
         REQUIRE(wp.getAngle() == 0);
         REQUIRE(wp.getShortSide() == 0);
@@ -26,7 +26,7 @@ TEST_CASE("WorkPiece"){
         }
 
 
-        SECTION("Setting workpiece members")
+        SECTION("Setting elaborate members")
         {
             float f = 45.5;
             wp.setAngle(f);

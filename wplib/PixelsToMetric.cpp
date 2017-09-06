@@ -2,10 +2,9 @@
 // Created by riccardo on 23/08/17.
 //
 
-#include <bits/functexcept.h>
 #include "PixelsToMetric.h"
 
-float PixelsToMetric::mMConversion(int pixels) {
+float PixelsToMetric::elaborate(int pixels) {
     if(pixels>0)
     return pixels/pixelsPerMetricRatio;
     else

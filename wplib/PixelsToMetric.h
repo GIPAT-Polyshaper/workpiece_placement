@@ -5,6 +5,7 @@
 #ifndef WORKPIECE_PLACEMENT_PIXELSTOMETRIC_H
 #define WORKPIECE_PLACEMENT_PIXELSTOMETRIC_H
 
+#include <bits/functexcept.h>
 
 class PixelsToMetric {
 
@@ -30,7 +31,7 @@ public:
      * @throw invalid argument exception if the provided dimension is negative
      * @return dimension in mm
      */
-    float mMConversion(int pixels);
+    float elaborate(int pixels);
 
     /**
      * @brief Constructor

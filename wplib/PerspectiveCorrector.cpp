@@ -3,8 +3,6 @@
 //
 
 #include "PerspectiveCorrector.h"
-#include "ContourDetector.h"
-#include "BiggestContourFinder.h"
 
 namespace {
 
@@ -34,7 +32,7 @@ Image PerspectiveCorrector::correctedImage(const Image &img) {
 
     //Find contour
     Mat src = img.getM_mat();
-    const std::vector<cv::Point> &bc = BiggestContourFinder().biggestContour(ContourDetector().contours(src, true));
+    const std::vector<cv::Point> &bc = BiggestContourFinder().elaborate(ContourDetector().contours(src, true));
     std::vector<std::vector<cv::Point>> p;
     p.push_back(bc);
 

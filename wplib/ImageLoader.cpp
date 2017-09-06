@@ -2,8 +2,6 @@
 // Created by riccardo on 27/07/17.
 //
 
-
-
 #include "ImageLoader.h"
 
 namespace {

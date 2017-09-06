@@ -16,7 +16,7 @@ TEST_CASE("Extracting working area"){
 
     SECTION("extracting working area from image having white frame"){
         Image img = ImageLoader(img_path+"prova.png").getM_image();
-        cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
+        cv::Rect wa = WorkingAreaExtractor().elaborate(img);
         REQUIRE(wa.x == 50);
         REQUIRE(wa.y == 100);
         Approx W_target = Approx(600).epsilon(0.01);
@@ -27,7 +27,7 @@ TEST_CASE("Extracting working area"){
 
     SECTION("extracting working area from image not having frame"){
         Image img = ImageLoader(img_path+"prova2.png").getM_image();
-        cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
+        cv::Rect wa = WorkingAreaExtractor().elaborate(img);
         REQUIRE(wa.x == 0);
         REQUIRE(wa.y == 0);
         Approx W_target = Approx(600).epsilon(0.01);
@@ -38,7 +38,7 @@ TEST_CASE("Extracting working area"){
 
     SECTION("extracting working area from image having half frame"){
         Image img = ImageLoader(img_path+"workingArea300x400.png").getM_image();
-        cv::Rect wa = WorkingAreaExtractor(img).getM_workingArea();
+        cv::Rect wa = WorkingAreaExtractor().elaborate(img);
         REQUIRE(wa.x == 0);
         REQUIRE(wa.y == 0);
         Approx W_target = Approx(300).epsilon(0.01);

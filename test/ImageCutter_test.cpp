@@ -18,7 +18,7 @@ TEST_CASE("Image cutting")
 
     SECTION("rectangle cropping") {
 
-        Image imgC = ImageCutter(img, cv::Rect(100, 350, 250, 150)).getImage();
+        Image imgC = ImageCutter().elaborate(img, cv::Rect(100, 350, 250, 150));
         REQUIRE(imgC.getM_mat().rows == 150);
         REQUIRE(imgC.getM_mat().cols == 250);
     }

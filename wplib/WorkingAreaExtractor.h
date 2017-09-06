@@ -5,28 +5,31 @@
 #ifndef WORKPIECE_PLACEMENT_WORKINGAREAEXTRACTOR_H
 #define WORKPIECE_PLACEMENT_WORKINGAREAEXTRACTOR_H
 
-
 #include "Image.h"
+#include "ContourDetector.h"
+#include "BiggestContourFinder.h"
+
 
 class WorkingAreaExtractor {
 
 public:
 
-    cv::Rect m_workingArea;
-
-public:
-
     /**
-     * @brief constructor
-     * @param img image where search working area
-     */
-    WorkingAreaExtractor(const Image &img);
-
-    /**
-     * @brief Get method workingArea member
+     * @brief Find working area inside an Image
+     * @param img Image where search working Area
      * @return rectangle representing working area
      */
-    const cv::Rect &getM_workingArea() const;
+    const Rect elaborate(const Image& img);
+
+private:
+
+  /**
+   * @brief find bounding rectangle
+   * @param cont contour of the shape
+   * @return rectangle bounding the passed contour
+   */
+    cv::Rect findBoundingRect(const std::vector<cv::Point>& cont);
+
 };
 
 

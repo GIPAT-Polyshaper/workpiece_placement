@@ -7,6 +7,11 @@
 
 
 #include <opencv2/core/types.hpp>
+#include <map>
+#include <iostream>
+#include <opencv2/core/mat.hpp>
+
+#define PI 3.14159265
 
 class GcodePointUpdater {
 

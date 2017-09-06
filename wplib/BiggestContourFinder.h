@@ -18,7 +18,7 @@ public:
      * @throw invalid_argument exception when empty vector
      * @return the biggest contour (biggest area) in the vector
      */
-    std::vector <cv::Point> biggestContour(const std::vector <std::vector<cv::Point>>& vector) const;
+    std::vector <cv::Point> elaborate(const std::vector<std::vector<cv::Point>> &vector) const;
 };
 
 

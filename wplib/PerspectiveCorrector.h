@@ -7,6 +7,8 @@
 
 
 #include "Image.h"
+#include "ContourDetector.h"
+#include "BiggestContourFinder.h"
 
 class PerspectiveCorrector {
 

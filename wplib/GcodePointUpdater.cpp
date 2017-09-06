@@ -2,12 +2,9 @@
 // Created by riccardo on 01/09/17.
 //
 
-#include <map>
-#include <iostream>
-#include <opencv2/core/mat.hpp>
+
 #include "GcodePointUpdater.h"
 
-#define PI 3.14159265
 
 GcodePointUpdater::GcodePointUpdater(cv::Size gcodeSize, cv::Point2f vertices[4], float rotationAngle, float workingAreaHeight) :
          m_wpVerticesMM(vertices),

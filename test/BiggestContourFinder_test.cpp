@@ -17,7 +17,7 @@ TEST_CASE("Finding biggest contour"){
 
     SECTION("passing empty vector throw exception")
     {
-        REQUIRE_THROWS_AS(bcf.biggestContour(contours), std::invalid_argument);
+        REQUIRE_THROWS_AS(bcf.elaborate(contours), std::invalid_argument);
     }
 
     SECTION("vector with one contour return the contour"){
@@ -25,7 +25,7 @@ TEST_CASE("Finding biggest contour"){
         std::vector<std::vector<cv::Point>> contours;
         std::vector<cv::Point> contour0 = {cv::Point(1,1), cv::Point(1,10), cv::Point(10,10), cv::Point(10,1)};
         contours.push_back(contour0);
-        std::vector<cv::Point> bigCont = bcf.biggestContour(contours);
+        std::vector<cv::Point> bigCont = bcf.elaborate(contours);
         REQUIRE(bigCont[0].x == 1);
         REQUIRE(bigCont[0].y == 1);
         REQUIRE(bigCont[2].x == 10);
@@ -36,7 +36,7 @@ TEST_CASE("Finding biggest contour"){
         SECTION("Adding a bigger contour"){
             std::vector<cv::Point> contour1 = {cv::Point(1,1), cv::Point(1,20), cv::Point(20,20), cv::Point(20,1)};
             contours.push_back(contour1);
-            std::vector<cv::Point> bigCont = bcf.biggestContour(contours);
+            std::vector<cv::Point> bigCont = bcf.elaborate(contours);
             REQUIRE(bigCont[0].x == 1);
             REQUIRE(bigCont[0].y == 1);
             REQUIRE(bigCont[2].x == 20);
@@ -45,7 +45,7 @@ TEST_CASE("Finding biggest contour"){
             SECTION("Adding a smaller contour"){
                 std::vector<cv::Point> contour2 = {cv::Point(1,1), cv::Point(1,5), cv::Point(5,5), cv::Point(5,1)};
                 contours.push_back(contour2);
-                std::vector<cv::Point> bigCont = bcf.biggestContour(contours);
+                std::vector<cv::Point> bigCont = bcf.elaborate(contours);
                 REQUIRE(bigCont[0].x == 1);
                 REQUIRE(bigCont[0].y == 1);
                 REQUIRE(bigCont[2].x == 20);
@@ -54,7 +54,7 @@ TEST_CASE("Finding biggest contour"){
                 SECTION("removing bigger contour"){
                     //erese second element
                     contours.erase(contours.begin() + 1);
-                    std::vector<cv::Point> bigCont = bcf.biggestContour(contours);
+                    std::vector<cv::Point> bigCont = bcf.elaborate(contours);
                     REQUIRE(bigCont[0].x == 1);
                     REQUIRE(bigCont[0].y == 1);
                     REQUIRE(bigCont[2].x == 10);

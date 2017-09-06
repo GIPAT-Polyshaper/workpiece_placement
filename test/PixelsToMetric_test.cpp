@@ -14,10 +14,10 @@ TEST_CASE("Pixels to metric conversion"){
     SECTION("Converting negative value throws invalid argument exception")
     {
          
-         REQUIRE_THROWS_AS(ptm.mMConversion(-3), std::invalid_argument);
+         REQUIRE_THROWS_AS(ptm.elaborate(-3), std::invalid_argument);
     }
     
-    float mm = ptm.mMConversion(1200);
+    float mm = ptm.elaborate(1200);
     Approx mmTarget = Approx(372).epsilon(0.01);
     REQUIRE(mm == mmTarget);
 

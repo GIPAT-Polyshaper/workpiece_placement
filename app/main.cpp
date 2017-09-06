@@ -74,33 +74,33 @@ int main() {
 
 
     //extracting working area
-    Rect r = WorkingAreaExtractor(img).getM_workingArea();
+    Rect r = WorkingAreaExtractor().elaborate(img);
 
     //cut original image
     Image imgCut = ImageCutter().elaborate(img, r);
 
     imgCut.showImg();
 
-    //extracting workpiece
-    WorkPiece wp = WorkPieceExtractor().workpiece(imgCut.getM_mat());
+    //extracting elaborate
+    WorkPiece wp = WorkPieceExtractor().elaborate(imgCut.getM_mat());
 
-    //create a bounding rectangle of workpiece
+    //create a bounding rectangle of elaborate
     cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()), 90 +
             wp.getAngle());
 
-    //draw workpiece bounds
+    //draw elaborate bounds
     cv::Mat m = imgCut.getM_mat();
     cvtColor(m,m,COLOR_GRAY2BGR);
     const Point *pts = wp.getVertices();
 //    rr.points(pts);
     for( int j = 0; j < 4; j++ )
         line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255), 2, 8 );
-    namedWindow("workpiece", WINDOW_NORMAL);
-    imshow("workpiece", m);
+    namedWindow("elaborate", WINDOW_NORMAL);
+    imshow("elaborate", m);
     waitKey(0);
 
 
-    //print workpiece coordinates and dimensions
+    //print elaborate coordinates and dimensions
     std::cout<< "x: " << wp.getCenterPoint().x << std::endl;
     std::cout<< "y: " << wp.getCenterPoint().y << std::endl;
     std::cout<< "angle: " << wp.getAngle() << std::endl;
@@ -115,15 +115,15 @@ int main() {
     try {
         //converting pixels in mm
         PixelsToMetric ptm(r.width);
-        xmm = ptm.mMConversion(wp.getCenterPoint().x);
-        ymm = ptm.mMConversion(wp.getCenterPoint().y);
-        workingAreaHeightMm = ptm.mMConversion(r.height);
+        xmm = ptm.elaborate(wp.getCenterPoint().x);
+        ymm = ptm.elaborate(wp.getCenterPoint().y);
+        workingAreaHeightMm = ptm.elaborate(r.height);
         for(int i = 0; i < 4; i++)
         {
-            verticesMm[i] = cv::Point2f(ptm.mMConversion(wp.getVertices()[i].x), ptm.mMConversion(wp.getVertices()[i].y));
+            verticesMm[i] = cv::Point2f(ptm.elaborate(wp.getVertices()[i].x), ptm.elaborate(wp.getVertices()[i].y));
         }
-        sizemmX = ptm.mMConversion(wp.getLongSide());
-        sizemmY = ptm.mMConversion(wp.getShortSide());
+        sizemmX = ptm.elaborate(wp.getLongSide());
+        sizemmY = ptm.elaborate(wp.getShortSide());
         std::cout<< "xmm: " << xmm << std::endl;
         std::cout<< "ymm: " << ymm << std::endl;
         std::cout<< "sizemm: " << sizemmX <<"x"<< sizemmY;
