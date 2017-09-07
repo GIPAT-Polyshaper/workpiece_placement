@@ -42,8 +42,8 @@ TEST_CASE("Detecting contours inside image"){
 
     SECTION("Detecting contours of external black areas"){
 
-        Image img = ImageLoader(img_path+"prova.png").getM_image();
-        std::vector<std::vector<cv::Point>> vec = ContourDetector().contours(img.getM_mat(), true);
+        Image img = ImageLoader(img_path + "prova.png").getImage();
+        std::vector<std::vector<cv::Point>> vec = ContourDetector().contours(img.getMat(), true);
         Approx X_target = Approx(650).epsilon(0.01);
         Approx Y_target = Approx(600).epsilon(0.01);
         REQUIRE(vec.size() == 1);
@@ -55,8 +55,8 @@ TEST_CASE("Detecting contours inside image"){
 
     SECTION("Detecting contours of external white areas"){
 
-        Image img = ImageLoader(img_path+"prova.png").getM_image();
-        std::vector<std::vector<cv::Point>> vec = ContourDetector().contours(img.getM_mat(), false);
+        Image img = ImageLoader(img_path + "prova.png").getImage();
+        std::vector<std::vector<cv::Point>> vec = ContourDetector().contours(img.getMat(), false);
         Approx X_target = Approx(700).epsilon(0.01);
         Approx Y_target = Approx(1100).epsilon(0.01);
         REQUIRE(vec.size() == 1);

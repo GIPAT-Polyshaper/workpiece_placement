@@ -35,8 +35,8 @@ TEST_CASE("Extracting elaborate"){
 
     SECTION("Extracting elaborate from a purpose-built image"){
 
-        Image img = ImageLoader(img_path+"prova2.png").getM_image();
-        WorkPiece wp = WorkPieceExtractor().elaborate(img.getM_mat());
+        Image img = ImageLoader(img_path + "prova2.png").getImage();
+        WorkPiece wp = WorkPieceExtractor().elaborate(img.getMat());
         Approx X_target = Approx(225).epsilon(0.01);
         Approx Y_target = Approx(225).epsilon(0.01);
         Approx SS_target = Approx(150).epsilon(0.01);

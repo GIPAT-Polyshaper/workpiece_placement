@@ -61,13 +61,13 @@ public:
     /**
      * @brief shows the image in a fixed size window
      */
-    void showImg() const;
+    void show() const;
 
     /**
      * @brief get method for matrix member
      * @return matrix of current Image
      */
-    const Mat& getM_mat() const;
+    const Mat& getMat() const;
 
 };
 

@@ -9,6 +9,9 @@
 #include "../include/catch.hpp"
 #include "../wplib/PixelsToMetric.h"
 
+
+//WARNING!!! the result of this test depends on mmKnownSize constant defined in PixelsToMetri class
+
 TEST_CASE("Pixels to metric conversion"){
     PixelsToMetric ptm(1000);
     SECTION("Converting negative value throws invalid argument exception")

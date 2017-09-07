@@ -40,7 +40,7 @@ public:
      * @brief Get method Image member
      * @return Image member
      */
-    const Image &getM_image() const;
+    const Image &getImage() const;
 
 private:
 

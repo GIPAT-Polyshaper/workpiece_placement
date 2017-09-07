@@ -31,7 +31,7 @@ namespace {
 Image PerspectiveCorrector::correctedImage(const Image &img) {
 
     //Find contour
-    Mat src = img.getM_mat();
+    Mat src = img.getMat();
     const std::vector<cv::Point> &bc = BiggestContourFinder().elaborate(ContourDetector().contours(src, true));
     std::vector<std::vector<cv::Point>> p;
     p.push_back(bc);
@@ -65,7 +65,7 @@ Image PerspectiveCorrector::correctedImage(const Image &img) {
     Mat transformed = Mat::zeros(boundRect.height + offsetSize, boundRect.width + offsetSize, CV_8UC1);
 
     //apply trasformation
-    warpPerspective(img.getM_mat(), transformed, transmtx, transformed.size());
+    warpPerspective(img.getMat(), transformed, transmtx, transformed.size());
 
     Image imgCorrected("correctedImage",transformed);
     return imgCorrected;

@@ -16,7 +16,7 @@ TEST_CASE("Image creation"){
         cv::Mat zMat = Mat::zeros(400,400,CV_8UC1);
         Image zImg = Image(zMat);
         cv::Mat dst;
-        cv::bitwise_xor(zImg.getM_mat(), zMat, dst);
+        cv::bitwise_xor(zImg.getMat(), zMat, dst);
         REQUIRE_FALSE(cv::countNonZero(dst));
     }
 
@@ -24,7 +24,7 @@ TEST_CASE("Image creation"){
         cv::Mat oMat = Mat::ones(400,400,CV_8UC1);
         Image oImg = Image(oMat);
         cv::Mat dst;
-        cv::bitwise_xor(oImg.getM_mat(), oMat, dst);
+        cv::bitwise_xor(oImg.getMat(), oMat, dst);
         REQUIRE_FALSE(cv::countNonZero(dst));
     }
 
@@ -32,18 +32,18 @@ TEST_CASE("Image creation"){
 
 TEST_CASE("Image comparison"){
 
-    Image img1 = ImageLoader(img_path+"IMG_2215.JPG").getM_image();
+    Image img1 = ImageLoader(img_path + "IMG_2215.JPG").getImage();
     
     SECTION("is an image  equal to itself?")
     {
-        Image img2 = ImageLoader(img_path+"IMG_2215.JPG").getM_image();
+        Image img2 = ImageLoader(img_path + "IMG_2215.JPG").getImage();
         REQUIRE(img1.isEqualTo(img2));
 
 
     }
     SECTION("is an image equal to a different one?")
     {
-        Image img3 = ImageLoader(img_path+"IMG_2216.JPG").getM_image();
+        Image img3 = ImageLoader(img_path + "IMG_2216.JPG").getImage();
         REQUIRE_FALSE(img1.isEqualTo(img3));
     }
 

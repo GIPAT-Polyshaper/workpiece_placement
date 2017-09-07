@@ -15,10 +15,10 @@
 TEST_CASE("Perspective correction")
 {
 
-    Image img = ImageLoader(img_path + "perspective.png").getM_image();
+    Image img = ImageLoader(img_path + "perspective.png").getImage();
     PerspectiveCorrector pr;
     Image imgCorrected = pr.correctedImage(img);
-    Image comparisonImage = ImageLoader(img_path + "imageCorrected.jpg").getM_image();
+    Image comparisonImage = ImageLoader(img_path + "imageCorrected.jpg").getImage();
     REQUIRE(imgCorrected.isEqualTo(comparisonImage));
 
 }

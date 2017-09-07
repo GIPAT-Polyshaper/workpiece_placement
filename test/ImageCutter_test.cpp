@@ -14,13 +14,13 @@
 
 TEST_CASE("Image cutting")
 {
-    Image img = ImageLoader(img_path+"prova2.png").getM_image();
+    Image img = ImageLoader(img_path + "prova2.png").getImage();
 
     SECTION("rectangle cropping") {
 
         Image imgC = ImageCutter().elaborate(img, cv::Rect(100, 350, 250, 150));
-        REQUIRE(imgC.getM_mat().rows == 150);
-        REQUIRE(imgC.getM_mat().cols == 250);
+        REQUIRE(imgC.getMat().rows == 150);
+        REQUIRE(imgC.getMat().cols == 250);
     }
 
 }

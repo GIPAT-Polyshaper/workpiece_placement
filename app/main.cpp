@@ -41,17 +41,21 @@
 int main() {
 
 
-    Image img = ImageLoader("../../sample_imgs/prova.png").getM_image();
+//    Image img = ImageLoader("lastShot.bmp").getImage();
 
-//    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
-//
-//    cv::Mat mCapture = CameraCapture(1).capturing();
-//    if(mCapture.empty())
-//        return 0;
-//
-//    Image img("captured", mCapture);
-    img.showImg();
+    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 
+    cv::Mat mCapture = CameraCapture(1).capturing();
+    if(mCapture.empty())
+        return 0;
+
+    Image img("captured", mCapture);
+    time_t timer;
+    time(&timer);
+    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
+    imwrite(name , img.getMat());
+
+    img.show();
 
 //    //undistorting image
 //    FileStorage fs;
@@ -68,37 +72,47 @@ int main() {
 //      std::cout<<"ciao": std::cout << " pippo");
 //
 //    Mat undistortMat;
-//    undistort(imgDist.getM_mat(), undistortMat, intrinsic, distCoeffs);
+//    undistort(imgDist.getMat(), undistortMat, intrinsic, distCoeffs);
 //
 //    Image img("img",undistortMat);
 
 
+    //make a copy of the image
+    cv::Mat imgCopyMat;
+    img.getMat().copyTo(imgCopyMat);
+    Image imgCopy("imgBla", imgCopyMat);
+
     //extracting working area
-    Rect r = WorkingAreaExtractor().elaborate(img);
+    cv::RotatedRect r = WorkingAreaExtractor().elaborate(imgCopy);
+
+
+    //rotatedrect to rect
+    Point2f pts1[4] ;
+    r.points(pts1);
+    cv::Size2f s = r.size;
+    cv::Rect re(pts1[0], pts1[2]);
 
     //cut original image
-    Image imgCut = ImageCutter().elaborate(img, r);
+    Image imgCut = ImageCutter().elaborate(img, re);
 
-    imgCut.showImg();
+    imgCut.show();
 
-    //extracting elaborate
-    WorkPiece wp = WorkPieceExtractor().elaborate(imgCut.getM_mat());
+    //extracting workpiece
+    WorkPiece wp = WorkPieceExtractor().elaborate(imgCut.getMat());
 
-    //create a bounding rectangle of elaborate
-    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()), 90 +
-            wp.getAngle());
+    //create a bounding rectangle of workpiece
+    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()),
+                                         90 + wp.getAngle());
 
-    //draw elaborate bounds
-    cv::Mat m = imgCut.getM_mat();
+    //draw workpiece bounds
+    cv::Mat m = imgCut.getMat();
     cvtColor(m,m,COLOR_GRAY2BGR);
     const Point *pts = wp.getVertices();
-//    rr.points(pts);
     for( int j = 0; j < 4; j++ )
-        line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255), 2, 8 );
+        line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255));
     namedWindow("elaborate", WINDOW_NORMAL);
     imshow("elaborate", m);
     waitKey(0);
-
 
     //print elaborate coordinates and dimensions
     std::cout<< "x: " << wp.getCenterPoint().x << std::endl;
@@ -114,10 +128,10 @@ int main() {
     float workingAreaHeightMm;
     try {
         //converting pixels in mm
-        PixelsToMetric ptm(r.width);
+        PixelsToMetric ptm(re.width);
         xmm = ptm.elaborate(wp.getCenterPoint().x);
         ymm = ptm.elaborate(wp.getCenterPoint().y);
-        workingAreaHeightMm = ptm.elaborate(r.height);
+        workingAreaHeightMm = ptm.elaborate(re.height);
         for(int i = 0; i < 4; i++)
         {
             verticesMm[i] = cv::Point2f(ptm.elaborate(wp.getVertices()[i].x), ptm.elaborate(wp.getVertices()[i].y));

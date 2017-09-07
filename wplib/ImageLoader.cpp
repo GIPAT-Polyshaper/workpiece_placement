@@ -22,6 +22,6 @@ namespace {
 
 ImageLoader::ImageLoader(const std::string &filename) : m_image(filename, readImageGS(filename)) {}
 
-const Image &ImageLoader::getM_image() const {
+const Image &ImageLoader::getImage() const {
     return m_image;
 }

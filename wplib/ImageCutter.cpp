@@ -14,7 +14,7 @@ std::string ImageCutter::nameComposer(const std::string &filename)
 Image ImageCutter::imageCut(const Image & img, const cv::Rect& rect)
 {
 
-    Mat croppedMat = img.getM_mat()(rect);
+    Mat croppedMat = img.getMat()(rect);
     Image i = Image(nameComposer(img.getM_name()), croppedMat);
     return i;
 

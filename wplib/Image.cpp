@@ -29,11 +29,11 @@ const std::string &Image::getM_name() const {
     return m_name;
 }
 
-const Mat &Image::getM_mat() const {
+const Mat &Image::getMat() const {
     return m_mat;
 }
 
-void Image::showImg() const {
+void Image::show() const {
     namedWindow(this->m_name, WINDOW_NORMAL);
     imshow(this->m_name, this->m_mat);
     std::cout<<"Press a key to continue"<<std::endl;
@@ -45,7 +45,7 @@ bool Image::isEqualTo(const Image& img) {
     Mat src_base, hsv_base;
     Mat src_test, hsv_test;
     src_base = this->m_mat;
-    src_test = img.getM_mat();
+    src_test = img.getMat();
     //Histogram dimensionality
     int dims;
 
