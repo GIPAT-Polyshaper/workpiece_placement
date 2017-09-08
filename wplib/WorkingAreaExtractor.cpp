@@ -113,13 +113,23 @@ RotatedRect WorkingAreaExtractor::elaborate(const Image& img)
 
 //    return findBoundingRect(BiggestContourFinder().elaborate(ContourDetector().contours(img.getMat(), true)));
 
-    std::vector<cv::Point> biggestContour = BiggestContourFinder().elaborate(ContourDetector().contours(img.getMat(), true));
-    cv::RotatedRect r1 = cv::minAreaRect(biggestContour);
+    //make a copy of the image
+    cv::Mat* imgCopyMat = new cv::Mat();
+    img.getMat().copyTo(*imgCopyMat);
+    std::vector<std::vector<cv::Point>> biggestContour;
+    std::vector<cv::Point> bigcont = BiggestContourFinder().elaborate(ContourDetector().contours(img.getMat(), true));
+    biggestContour.push_back(bigcont);
+    cv::drawContours(*imgCopyMat,biggestContour,-1, cv::Scalar(0,0,255), CV_FILLED);
+
+    imshow("filled", *imgCopyMat);
+    waitKey(0);
+
+    cv::RotatedRect r1 = cv::minAreaRect(bigcont);
 
     Point2f p[4];
     r1.points(p);
     cv::Mat m = Mat::ones(500,500, CV_8UC1);
-    cv::RotatedRect r2 = largestRectInNonConvexPoly(img.getMat());
+    cv::RotatedRect r2 = largestRectInNonConvexPoly(*imgCopyMat);
     return r2;
 
 }

@@ -20,8 +20,7 @@ std::vector<std::vector<cv::Point>> ContourDetector::contours(const cv::Mat &mat
     // find contours
     std::vector<std::vector<cv::Point>> contours;
     cv::findContours(mask,contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-    if(inv)
-        cv::drawContours(mat,contours,-1, cv::Scalar(0,0,255), CV_FILLED);
+
 
 //    //todo eliminare parte commentata
 //    imshow("ciao", mat);

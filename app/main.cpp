@@ -41,19 +41,19 @@
 int main() {
 
 
-//    Image img = ImageLoader("lastShot.bmp").getImage();
+    Image img = ImageLoader("../../shots/shot507803.bmp").getImage();
 
-    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
-
-    cv::Mat mCapture = CameraCapture(1).capturing();
-    if(mCapture.empty())
-        return 0;
-
-    Image img("captured", mCapture);
-    time_t timer;
-    time(&timer);
-    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
-    imwrite(name , img.getMat());
+//    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
+//
+//    cv::Mat mCapture = CameraCapture(1).capturing();
+//    if(mCapture.empty())
+//        return 0;
+//
+//    Image img("captured", mCapture);
+//    time_t timer;
+//    time(&timer);
+//    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
+//    imwrite(name , img.getMat());
 
     img.show();
 
@@ -78,13 +78,14 @@ int main() {
 
 
     //make a copy of the image
-    cv::Mat imgCopyMat;
-    img.getMat().copyTo(imgCopyMat);
-    Image imgCopy("imgBla", imgCopyMat);
+    cv::Mat* imgCopyMat = new cv::Mat();
+    img.getMat().copyTo(*imgCopyMat);
 
-    //extracting working area
-    cv::RotatedRect r = WorkingAreaExtractor().elaborate(imgCopy);
+    //extracting working area from copy
+    cv::RotatedRect r = WorkingAreaExtractor().elaborate(Image("imgCopy", *imgCopyMat));
 
+    //deleting
+    delete imgCopyMat;
 
     //rotatedrect to rect
     Point2f pts1[4] ;
