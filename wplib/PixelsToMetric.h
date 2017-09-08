@@ -15,7 +15,7 @@ private:
      * @brief known dimension in millimeters
      * @details working area width
      */
-    const float mmKnownSize = 310.0;
+    const float mmKnownSize = 273.0;
 
     /**
      * @brief pixels per metric ratio

@@ -41,19 +41,19 @@
 int main() {
 
 
-    Image img = ImageLoader("../../shots/shot507803.bmp").getImage();
+//    Image img = ImageLoader("../../shots/shot507803.bmp").getImage();
 
-//    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
-//
-//    cv::Mat mCapture = CameraCapture(1).capturing();
-//    if(mCapture.empty())
-//        return 0;
-//
-//    Image img("captured", mCapture);
-//    time_t timer;
-//    time(&timer);
-//    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
-//    imwrite(name , img.getMat());
+    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
+
+    cv::Mat mCapture = CameraCapture(1).capturing();
+    if(mCapture.empty())
+        return 0;
+
+    Image img("captured", mCapture);
+    time_t timer;
+    time(&timer);
+    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
+    imwrite(name , img.getMat());
 
     img.show();
 
@@ -130,8 +130,8 @@ int main() {
     try {
         //converting pixels in mm
         PixelsToMetric ptm(re.width);
-        xmm = ptm.elaborate(wp.getCenterPoint().x);
-        ymm = ptm.elaborate(wp.getCenterPoint().y);
+        xmm = ptm.elaborate(wp.getVertices()[0].x);
+        ymm = ptm.elaborate(wp.getVertices()[0].y);
         workingAreaHeightMm = ptm.elaborate(re.height);
         for(int i = 0; i < 4; i++)
         {
@@ -148,11 +148,11 @@ int main() {
     }
 
 
-//    std::ifstream gcode;
+    std::ifstream gcode;
     auto output = std::ostringstream();
 
-//    gcode.open("../../sample_gcode/output.ngc", std::ifstream::in );
-    auto input = std::istringstream("Dummy\nG00 X10\nMore dummyStuffs\nG01 Z10 Y67\nfinal dummy stuff");
+    gcode.open("../../sample_gcode/prova1.gcode", std::ifstream::in );
+//    auto input = std::istringstream("Dummy\nG00 X10\nMore dummyStuffs\nG01 Z10 Y67\nfinal dummy stuff");
 
 //
 //    if(gcode.is_open())
@@ -160,22 +160,25 @@ int main() {
 //    else
 //        std::cout << "no" << std::endl;
 
-    auto gcodeUpdater = GcodeUpdater(input, output);
+    auto gcodeUpdater = GcodeUpdater(gcode, output);
 
     //important! respect the order (x,y)
     cv::Size gcodeSize(150,100);
 
     GcodePointUpdater gcpu(gcodeSize, verticesMm, wp.getAngle(), workingAreaHeightMm);
 
+    // G01 Y-237
+    // G92 Y0
+
     while (gcodeUpdater.hasNextPoint())
     {
 
         GcodeUpdater::Point p = gcodeUpdater.nextPoint();
-        GcodeUpdater::Point newP = gcpu.elaborate(p, 80);
+        GcodeUpdater::Point newP = gcpu.elaborate(p, 0);
         gcodeUpdater.updatePoint(newP);
 
     }
     std::cout << output.str()<< std::endl;
-//    gcode.close();
+    gcode.close();
     return 0;
 }

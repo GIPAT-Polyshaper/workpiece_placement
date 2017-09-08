@@ -70,6 +70,7 @@ void GcodePointUpdater::rotoTranslation()
         }
         else
         {
+            cv::Point2f p = biggestY();
             m_rotationAngle =  - (90 - m_rotationAngle);
             m_translationPoint.y = m_workingAreaHeight - biggestY().y;
             if(m_rotationAngle == 0)
@@ -95,7 +96,9 @@ std::array<double, 4> GcodePointUpdater::elaborate(std::array<double, 4> point, 
 
     cv::Mat_<double> rotoTranslationMatrix(3,3);
 
+
     float angle = - m_rotationAngle *  PI / 180.0;
+
 
     rotoTranslationMatrix(0,0) = cos(angle);
     rotoTranslationMatrix(0,1) = -sin(angle);
@@ -109,12 +112,12 @@ std::array<double, 4> GcodePointUpdater::elaborate(std::array<double, 4> point, 
 
     cv::Mat_<double> pTranslatedRotated = rotoTranslationMatrix * p;
 
-    float x = m_rotationAngle;
 
+    float angle2 = (m_rotationAngle * 10) /float(180);
     point[0] = pTranslatedRotated(0,0);
     point[1] = pTranslatedRotated(0,1);
     point[2] += z;
-    point[3] += m_rotationAngle;
+    point[3] += angle2 - 2.5;
 
     return point;
 }
@@ -162,7 +165,7 @@ const cv::Point2f GcodePointUpdater::biggestY()
     int maxYIndex = 0;
     for(int i = 1; i < 4; i++){
 
-        if(m_wpVerticesMM[i].x > maxY) {
+        if(m_wpVerticesMM[i].y > maxY) {
             maxY = m_wpVerticesMM[i].y;
             maxYIndex = i;
         }
