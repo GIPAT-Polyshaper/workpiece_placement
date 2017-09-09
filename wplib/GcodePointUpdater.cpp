@@ -117,7 +117,7 @@ std::array<double, 4> GcodePointUpdater::elaborate(std::array<double, 4> point, 
     point[0] = pTranslatedRotated(0,0);
     point[1] = pTranslatedRotated(0,1);
     point[2] += z;
-    point[3] += angle2 - 2.5;
+    point[3] += - angle2 + 5;
 
     return point;
 }

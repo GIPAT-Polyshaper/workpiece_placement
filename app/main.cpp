@@ -11,6 +11,7 @@
 #include "../wplib/PixelsToMetric.h"
 #include "../wplib/GcodeUpdater.h"
 #include "../wplib/GcodePointUpdater.h"
+#include <opencv2/aruco.hpp>
 
 
 //TODO controllare esistenza file di calibrazione
@@ -49,6 +50,8 @@ int main() {
     if(mCapture.empty())
         return 0;
 
+
+
     Image img("captured", mCapture);
     time_t timer;
     time(&timer);
@@ -56,6 +59,41 @@ int main() {
     imwrite(name , img.getMat());
 
     img.show();
+
+    cv::Mat copyMat;
+    img.getMat().copyTo(copyMat);
+
+
+    cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
+    std::vector<int> ids;
+    std::vector<std::vector<cv::Point2f> > corners;
+    cv::aruco::detectMarkers(copyMat, dictionary, corners, ids);
+
+    cv::aruco::drawDetectedMarkers(copyMat, corners, ids);
+    imshow("copm", copyMat);
+    waitKey(0);
+
+
+    if(corners.size() != 4)
+    {return 0;}
+
+    int index0;
+    int index2;
+    for(int i = 0; i < 4; i++){
+
+        if(ids[i] == 0)
+            index0 = i;
+        if(ids[i]==2)
+            index2 = i;
+    }
+    cv::Rect arucoRect(corners[index0][2], corners[index2][1]);
+
+//    cv::Mat copyMat;
+//    img.getMat().copyTo(copyMat);
+//    cv::rectangle(copyMat, arucoRect, cv::Scalar(255,255,255), 2);
+//
+//    imshow("image",copyMat);
+//    waitKey(0);
 
 //    //undistorting image
 //    FileStorage fs;
@@ -81,20 +119,24 @@ int main() {
     cv::Mat* imgCopyMat = new cv::Mat();
     img.getMat().copyTo(*imgCopyMat);
 
-    //extracting working area from copy
-    cv::RotatedRect r = WorkingAreaExtractor().elaborate(Image("imgCopy", *imgCopyMat));
-
-    //deleting
-    delete imgCopyMat;
-
-    //rotatedrect to rect
-    Point2f pts1[4] ;
-    r.points(pts1);
-    cv::Size2f s = r.size;
-    cv::Rect re(pts1[0], pts1[2]);
+//    //extracting working area from copy
+//    cv::RotatedRect r = WorkingAreaExtractor().elaborate(Image("imgCopy", *imgCopyMat));
+//
+//    //deleting
+//    delete imgCopyMat;
+//
+//    //rotatedrect to rect
+//    Point2f pts1[4] ;
+//    r.points(pts1);
+//    cv::Size2f s = r.size;
+//    cv::Rect re(pts1[0], pts1[2]);
 
     //cut original image
-    Image imgCut = ImageCutter().elaborate(img, re);
+    Image imgCut = ImageCutter().elaborate(img, arucoRect);
+
+
+//    //cut original image
+//    Image imgCut = ImageCutter().elaborate(img, arucoRect);
 
     imgCut.show();
 
@@ -129,10 +171,10 @@ int main() {
     float workingAreaHeightMm;
     try {
         //converting pixels in mm
-        PixelsToMetric ptm(re.width);
+        PixelsToMetric ptm(arucoRect.width);
         xmm = ptm.elaborate(wp.getVertices()[0].x);
         ymm = ptm.elaborate(wp.getVertices()[0].y);
-        workingAreaHeightMm = ptm.elaborate(re.height);
+        workingAreaHeightMm = ptm.elaborate(arucoRect.height);
         for(int i = 0; i < 4; i++)
         {
             verticesMm[i] = cv::Point2f(ptm.elaborate(wp.getVertices()[i].x), ptm.elaborate(wp.getVertices()[i].y));
@@ -151,7 +193,7 @@ int main() {
     std::ifstream gcode;
     auto output = std::ostringstream();
 
-    gcode.open("../../sample_gcode/prova1.gcode", std::ifstream::in );
+    gcode.open("../../sample_gcode/prova-003.gcode", std::ifstream::in );
 //    auto input = std::istringstream("Dummy\nG00 X10\nMore dummyStuffs\nG01 Z10 Y67\nfinal dummy stuff");
 
 //
@@ -163,7 +205,7 @@ int main() {
     auto gcodeUpdater = GcodeUpdater(gcode, output);
 
     //important! respect the order (x,y)
-    cv::Size gcodeSize(150,100);
+    cv::Size gcodeSize(10,5);
 
     GcodePointUpdater gcpu(gcodeSize, verticesMm, wp.getAngle(), workingAreaHeightMm);
 
