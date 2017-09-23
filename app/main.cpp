@@ -42,51 +42,51 @@
 int main() {
 
 
-//    Image img = ImageLoader("../../shots/shot507803.bmp").getImage();
+    Image img = ImageLoader("../../sample_imgs/prova.png").getImage();
 
-    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
-
-    cv::Mat mCapture = CameraCapture(1).capturing();
-    if(mCapture.empty())
-        return 0;
-
-
-
-    Image img("captured", mCapture);
-    time_t timer;
-    time(&timer);
-    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
-    imwrite(name , img.getMat());
+//    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
+//
+//    cv::Mat mCapture = CameraCapture(1).capturing();
+//    if(mCapture.empty())
+//        return 0;
+//
+//
+//
+//    Image img("captured", mCapture);
+//    time_t timer;
+//    time(&timer);
+//    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
+//    imwrite(name , img.getMat());
 
     img.show();
 
     cv::Mat copyMat;
     img.getMat().copyTo(copyMat);
 
+//
+//    cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
+//    std::vector<int> ids;
+//    std::vector<std::vector<cv::Point2f> > corners;
+//    cv::aruco::detectMarkers(copyMat, dictionary, corners, ids);
+//
+//    cv::aruco::drawDetectedMarkers(copyMat, corners, ids);
+//    imshow("copm", copyMat);
+//    waitKey(0);
 
-    cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
-    std::vector<int> ids;
-    std::vector<std::vector<cv::Point2f> > corners;
-    cv::aruco::detectMarkers(copyMat, dictionary, corners, ids);
-
-    cv::aruco::drawDetectedMarkers(copyMat, corners, ids);
-    imshow("copm", copyMat);
-    waitKey(0);
-
-
-    if(corners.size() != 4)
-    {return 0;}
-
-    int index0;
-    int index2;
-    for(int i = 0; i < 4; i++){
-
-        if(ids[i] == 0)
-            index0 = i;
-        if(ids[i]==2)
-            index2 = i;
-    }
-    cv::Rect arucoRect(corners[index0][2], corners[index2][1]);
+//
+//    if(corners.size() != 4)
+//    {return 0;}
+//
+//    int index0;
+//    int index2;
+//    for(int i = 0; i < 4; i++){
+//
+//        if(ids[i] == 0)
+//            index0 = i;
+//        if(ids[i]==2)
+//            index2 = i;
+//    }
+//    cv::Rect arucoRect(corners[index0][2], corners[index2][1]);
 
 //    cv::Mat copyMat;
 //    img.getMat().copyTo(copyMat);
@@ -95,48 +95,28 @@ int main() {
 //    imshow("image",copyMat);
 //    waitKey(0);
 
-//    //undistorting image
-//    FileStorage fs;
-//    fs.open("calibrationParams.xml", FileStorage::READ);
 //
-//    if(!fs.isOpened())
-//        //TODO throw exeption?
-//        ;
-//    Mat intrinsic, distCoeffs;
-//
-//    fs["distortion_coefficients"] >> distCoeffs;
-//    fs["intrinsic_matrix"] >> intrinsic;
-//    (distCoeffs.empty() || intrinsic.empty() ? //TODO throw exeption?
-//      std::cout<<"ciao": std::cout << " pippo");
-//
-//    Mat undistortMat;
-//    undistort(imgDist.getMat(), undistortMat, intrinsic, distCoeffs);
-//
-//    Image img("img",undistortMat);
 
 
     //make a copy of the image
     cv::Mat* imgCopyMat = new cv::Mat();
     img.getMat().copyTo(*imgCopyMat);
 
-//    //extracting working area from copy
-//    cv::RotatedRect r = WorkingAreaExtractor().elaborate(Image("imgCopy", *imgCopyMat));
-//
-//    //deleting
-//    delete imgCopyMat;
-//
-//    //rotatedrect to rect
-//    Point2f pts1[4] ;
-//    r.points(pts1);
-//    cv::Size2f s = r.size;
-//    cv::Rect re(pts1[0], pts1[2]);
+    //extracting working area from copy
+    cv::RotatedRect r = WorkingAreaExtractor().elaborate(Image("imgCopy", *imgCopyMat));
 
-    //cut original image
-    Image imgCut = ImageCutter().elaborate(img, arucoRect);
+    //deleting
+    delete imgCopyMat;
+
+    //rotatedrect to rect
+    Point2f pts1[4] ;
+    r.points(pts1);
+    cv::Size2f s = r.size;
+    cv::Rect re(pts1[0], pts1[2]);
 
 
 //    //cut original image
-//    Image imgCut = ImageCutter().elaborate(img, arucoRect);
+    Image imgCut = ImageCutter().elaborate(img, re);
 
     imgCut.show();
 
@@ -152,7 +132,7 @@ int main() {
     cvtColor(m,m,COLOR_GRAY2BGR);
     const Point *pts = wp.getVertices();
     for( int j = 0; j < 4; j++ )
-        line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255));
+        line( m, pts[j], pts[(j+1)%4], Scalar(0,0,255),2);
     namedWindow("elaborate", WINDOW_NORMAL);
     imshow("elaborate", m);
     waitKey(0);
@@ -171,10 +151,10 @@ int main() {
     float workingAreaHeightMm;
     try {
         //converting pixels in mm
-        PixelsToMetric ptm(arucoRect.width);
+        PixelsToMetric ptm(re.width);
         xmm = ptm.elaborate(wp.getVertices()[0].x);
         ymm = ptm.elaborate(wp.getVertices()[0].y);
-        workingAreaHeightMm = ptm.elaborate(arucoRect.height);
+        workingAreaHeightMm = ptm.elaborate(re.height);
         for(int i = 0; i < 4; i++)
         {
             verticesMm[i] = cv::Point2f(ptm.elaborate(wp.getVertices()[i].x), ptm.elaborate(wp.getVertices()[i].y));
