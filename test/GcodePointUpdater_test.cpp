@@ -33,7 +33,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 0);
+            CHECK( newP[3] == 5);
         }
 
         SECTION("Bottom right corner")
@@ -45,7 +45,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 20.5);
+            CHECK( newP[3] == 25.5);
         }
 
         SECTION("Top right corner")
@@ -57,7 +57,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 20.5);
+            CHECK( newP[3] == 25.5);
         }
 
         SECTION("Point inside bound")
@@ -69,7 +69,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 20.5);
+            CHECK( newP[3] == 25.5);
         }
     }
 
@@ -91,7 +91,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == - 90);
+            CHECK( newP[3] == 10);
         }
 
         SECTION("Bottom right corner")
@@ -103,7 +103,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == - 69.5);
+            CHECK( newP[3] == 30.5);
         }
 
         SECTION("Top right corner")
@@ -115,7 +115,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == - 69.5);
+            CHECK( newP[3] == 30.5);
         }
 
         SECTION("Point inside bound")
@@ -127,7 +127,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == - 69.5);
+            CHECK( newP[3] == 30.5);
         }
 
     }
@@ -150,7 +150,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23);
         }
 
         SECTION("Bottom right corner")
@@ -162,7 +162,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23);
         }
 
         SECTION("Top right corner")
@@ -174,7 +174,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23);
         }
 
         SECTION("Point inside bound")
@@ -186,7 +186,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23);
         }
 
     }
@@ -210,7 +210,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == -24.5);
+            CHECK( newP[3] == 28);
         }
 
         SECTION("Bottom right corner")
@@ -222,7 +222,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == -24.5);
+            CHECK( newP[3] == 28);
         }
 
         SECTION("Top right corner")
@@ -234,7 +234,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == -24.5);
+            CHECK( newP[3] == 28);
         }
 
         SECTION("Point inside bound")
@@ -246,7 +246,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == -24.5);
+            CHECK( newP[3] == 28);
         }
 
     }
@@ -269,7 +269,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 155.5);
+            CHECK( newP[3] == 18);
         }
 
         SECTION("Bottom right corner")
@@ -281,7 +281,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 155.5);
+            CHECK( newP[3] == 18);
         }
 
         SECTION("Top right corner")
@@ -293,7 +293,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 155.5);
+            CHECK( newP[3] == 18.0);
         }
 
         SECTION("Point inside bound")
@@ -305,7 +305,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 155.5);
+            CHECK( newP[3] == 18.0);
         }
 
     }
@@ -328,7 +328,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23.0);
         }
 
         SECTION("Bottom right corner")
@@ -340,7 +340,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23.0);
         }
 
         SECTION("Top right corner")
@@ -352,7 +352,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23.0);
         }
 
         SECTION("Point inside bound")
@@ -364,7 +364,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 65.5);
+            CHECK( newP[3] == 23.0);
         }
 
     }
@@ -387,7 +387,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 90);
+            CHECK( newP[3] == 0.0);
         }
 
         SECTION("Bottom right corner")
@@ -399,7 +399,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 110.5);
+            CHECK( newP[3] == 20.5);
         }
 
         SECTION("Top right corner")
@@ -411,7 +411,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 110.5);
+            CHECK( newP[3] == 20.5);
         }
 
         SECTION("Point inside bound")
@@ -423,7 +423,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 110.5);
+            CHECK( newP[3] == 20.5);
         }
 
     }
@@ -446,7 +446,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 0);
+            CHECK( newP[3] == 5);
         }
 
         SECTION("Bottom right corner")
@@ -458,7 +458,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 20.5);
+            CHECK( newP[3] == 25.5);
         }
 
         SECTION("Top right corner")
@@ -470,7 +470,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 20.5);
+            CHECK( newP[3] == 25.5);
         }
 
         SECTION("Point inside bound")
@@ -482,7 +482,7 @@ TEST_CASE("Updating a gcode point")
             CHECK( newP[0] == x_Target);
             CHECK( newP[1] == y_Target);
             CHECK( newP[2] == float(90));
-            CHECK( newP[3] == 20.5);
+            CHECK( newP[3] == 25.5);
         }
 
     }

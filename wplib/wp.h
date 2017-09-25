@@ -57,14 +57,16 @@ namespace wp{
     * @brief Find largest rotated rectangle containing only ones in an binary matrix
     * @details code took from here: https://stackoverflow.com/questions/32674256/how-to-adapt-or-resize-a-rectangle-inside-an-object-without-including-or-with-a/32682512
     * @param src2 matrix where search largest rectangle
+    * @param loopOnAngles If false find only the biggest rotated rectangle having angle 0
     * @return largest rotated rect
     */
-    cv::RotatedRect largestRectInNonConvexPoly(const cv::Mat1b &src2) {
+    cv::RotatedRect largestRectInNonConvexPoly(const cv::Mat1b &src2, bool loopOnAngles = true) {
 
         float resizingFactor = (float)src2.cols/(float)maxMatWidth;
         cv::Mat1b src;
         cv::resize(src2, src, cv::Size(), 1/resizingFactor, 1/resizingFactor, cv::INTER_LINEAR);
-        threshold(src, src, 0, 255,  CV_THRESH_BINARY | CV_THRESH_OTSU);
+            (loopOnAngles)?threshold(src, src, 0, 255,  CV_THRESH_BINARY | CV_THRESH_OTSU)
+                          :threshold(src, src, 0, 255,  CV_THRESH_BINARY_INV | CV_THRESH_OTSU);
 
         // Create a matrix big enough to not lose points during rotation
         std::vector<cv::Point> ptz;
@@ -78,11 +80,37 @@ namespace wp{
         cv::Rect bestRect;
         int bestAngle = 0;
 
-        // For each angle
-        for (int angle = 0; angle < 90; angle++) {
+        if(loopOnAngles) {
+            // For each angle
+            for (int angle = 0; angle < 90; angle++) {
 
+                // Rotate the image
+                cv::Mat R = cv::getRotationMatrix2D(cv::Point(maxdim, maxdim), angle, 1);
+                cv::Mat1b rotated;
+                warpAffine(work, rotated, R, work.size());
+
+                // Keep the crop with the polygon
+                std::vector<cv::Point> pts;
+                findNonZero(rotated, pts);
+                cv::Rect box = boundingRect(pts);
+                cv::Mat1b crop = rotated(box).clone();
+
+                // Invert colors
+                crop = ~crop;
+
+                // Solve the problem: "Find largest rectangle containing only zeros in an binary matrix"
+                // https://stackoverflow.com/questions/2478447/find-largest-rectangle-containing-only-zeros-in-an-n%C3%97n-binary-matrix
+                cv::Rect r = findMaxRect(crop);
+                // If best, save result
+                if (r.area() > bestRect.area()) {
+                    bestRect = r + box.tl();    // Correct the crop displacement
+                    bestAngle = angle;
+                }
+            }
+        } else
+        {
             // Rotate the image
-            cv::Mat R = cv::getRotationMatrix2D(cv::Point(maxdim, maxdim), angle, 1);
+            cv::Mat R = cv::getRotationMatrix2D(cv::Point(maxdim, maxdim), 0, 1);
             cv::Mat1b rotated;
             warpAffine(work, rotated, R, work.size());
 
@@ -101,7 +129,6 @@ namespace wp{
             // If best, save result
             if (r.area() > bestRect.area()) {
                 bestRect = r + box.tl();    // Correct the crop displacement
-                bestAngle = angle;
             }
         }
 

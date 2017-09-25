@@ -21,7 +21,7 @@ TEST_CASE("Pixels to metric conversion"){
     }
     
     float mm = ptm.elaborate(1200);
-    Approx mmTarget = Approx(372).epsilon(0.01);
+    Approx mmTarget = Approx(327).epsilon(0.01);
     REQUIRE(mm == mmTarget);
 
 }
