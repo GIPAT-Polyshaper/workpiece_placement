@@ -5,7 +5,7 @@
 #include "CameraCalibrator.h"
 
 
-void CameraCalibrator::calibrate(int cameraId) {
+void CameraCalibrator::elaborate(int cameraId) {
 
     int numBoards = this->m_shots;
     int numCornersHor = this->boardSize.width;

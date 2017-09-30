@@ -6,7 +6,7 @@
 #include "wp.h"
 
 
-RotatedRect WorkingAreaExtractor::elaborate(const Image& img)
+Rect WorkingAreaExtractor::elaborate(const Image& img)
 {
 
 //    return findBoundingRect(BiggestContourFinder().elaborate(ContourDetector().contours(img.getMat(), true)));
@@ -29,7 +29,13 @@ RotatedRect WorkingAreaExtractor::elaborate(const Image& img)
     r1.points(p);
     cv::Mat m = Mat::ones(500,500, CV_8UC1);
     cv::RotatedRect r2 = wp::largestRectInNonConvexPoly(*imgCopyMat, false);
-    return r2;
+
+    //rotatedrect to rect
+    Point2f pts1[4] ;
+    r2.points(pts1);
+    cv::Size2f s = r2.size;
+    cv::Rect re(pts1[0], pts1[2]);
+    return re;
 
 }
 

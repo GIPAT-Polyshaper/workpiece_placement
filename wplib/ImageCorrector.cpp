@@ -18,7 +18,7 @@ Image ImageCorrector::elaborate(const Image & img) const {
 
 std::vector<cv::Mat> ImageCorrector::readParams()const {
 
-    FileStorage fs;
+    cv::FileStorage fs;
     fs.open(this->filename, FileStorage::READ);
 
     if(!fs.isOpened())

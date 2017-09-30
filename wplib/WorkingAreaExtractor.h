@@ -19,7 +19,7 @@ public:
      * @param img Image where search working Area
      * @return rectangle representing working area
      */
-    RotatedRect elaborate(const Image& img);
+    Rect elaborate(const Image& img);
 
 private:
 

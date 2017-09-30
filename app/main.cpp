@@ -11,13 +11,15 @@
 #include "../wplib/PixelsToMetric.h"
 #include "../wplib/GcodeUpdater.h"
 #include "../wplib/GcodePointUpdater.h"
+#include "../wplib/WorkingAreaLoader.h"
+#include "../wplib/WorkingAreaSaver.h"
 #include <opencv2/aruco.hpp>
 
 
 //TODO controllare esistenza file di calibrazione
 
-//
-////use this main for camera calibration
+
+//use this main for camera calibration and working area search
 //int main(){
 //
 //    int numBoards = 0;
@@ -33,7 +35,28 @@
 //    scanf("%d", &numBoards);
 //
 //    CameraCalibrator cc( numCornersHor, numCornersVer, numBoards);
-//    cc.calibrate(1);
+//    cc.elaborate(1);
+//
+//    std::cout<<"Press 's' to capture and start working area detection, 'Esc' to abort"<<std::endl;
+//
+//    cv::Mat mCapture = CameraCapture(1).capturing();
+//    if(mCapture.empty())
+//        return 0;
+//
+//    Image img("captured", mCapture);
+//
+//    img.show();
+//
+//    cv::Mat copyMat;
+//    img.getMat().copyTo(copyMat);
+//    //extracting working area from copy
+//    cv::Rect r = WorkingAreaExtractor().elaborate(Image("imgCopy", copyMat));
+//
+//    //deleting
+//    delete copyMat;
+//
+//    //saving working area in a file
+//    WorkingAreaSaver().elaborate(r);
 //
 //    return 0;
 //}
@@ -58,11 +81,6 @@ int main() {
 //    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
 //    imwrite(name , img.getMat());
 
-    img.show();
-
-    cv::Mat copyMat;
-    img.getMat().copyTo(copyMat);
-
 //
 //    cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
 //    std::vector<int> ids;
@@ -72,7 +90,6 @@ int main() {
 //    cv::aruco::drawDetectedMarkers(copyMat, corners, ids);
 //    imshow("copm", copyMat);
 //    waitKey(0);
-
 //
 //    if(corners.size() != 4)
 //    {return 0;}
@@ -95,25 +112,8 @@ int main() {
 //    imshow("image",copyMat);
 //    waitKey(0);
 
-//
-
-
-    //make a copy of the image
-    cv::Mat* imgCopyMat = new cv::Mat();
-    img.getMat().copyTo(*imgCopyMat);
-
-    //extracting working area from copy
-    cv::RotatedRect r = WorkingAreaExtractor().elaborate(Image("imgCopy", *imgCopyMat));
-
-    //deleting
-    delete imgCopyMat;
-
-    //rotatedrect to rect
-    Point2f pts1[4] ;
-    r.points(pts1);
-    cv::Size2f s = r.size;
-    cv::Rect re(pts1[0], pts1[2]);
-
+    //loading working area from file
+    cv::Rect re = WorkingAreaLoader().elaborate();
 
 //    //cut original image
     Image imgCut = ImageCutter().elaborate(img, re);
@@ -123,9 +123,9 @@ int main() {
     //extracting workpiece
     WorkPiece wp = WorkPieceExtractor().elaborate(imgCut.getMat());
 
-    //create a bounding rectangle of workpiece
-    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()),
-                                         90 + wp.getAngle());
+//    //create a bounding rectangle of workpiece
+//    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()),
+//                                         90 + wp.getAngle());
 
     //draw workpiece bounds
     cv::Mat m = imgCut.getMat();

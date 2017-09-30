@@ -37,7 +37,7 @@ public:
      * Find calibration parameters
      * @param cameraId ID number of the used camera
      */
-    void calibrate(int cameraId);
+    void elaborate(int cameraId);
 
     /**
      * Constructor
