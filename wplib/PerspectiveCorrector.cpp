@@ -3,6 +3,7 @@
 //
 
 #include "PerspectiveCorrector.h"
+#include "wp.h"
 
 namespace {
 
@@ -32,7 +33,7 @@ Image PerspectiveCorrector::correctedImage(const Image &img) {
 
     //Find contour
     Mat src = img.getMat();
-    const std::vector<cv::Point> &bc = BiggestContourFinder().elaborate(ContourDetector().contours(src, true));
+    const std::vector<cv::Point> &bc = wp::biggestContourFinder(wp::contourDetector(src, true));
     std::vector<std::vector<cv::Point>> p;
     p.push_back(bc);
 

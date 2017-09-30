@@ -1,6 +1,6 @@
 set(SOURCE_FILES Image.h Image.cpp WorkPiece.cpp WorkPiece.h ImageLoader.cpp ImageLoader.h
-        ContourDetector.cpp ContourDetector.h WorkingAreaExtractor.cpp WorkingAreaExtractor.h
-        ImageCutter.cpp ImageCutter.h BiggestContourFinder.cpp BiggestContourFinder.h
+        WorkingAreaExtractor.cpp WorkingAreaExtractor.h
+        ImageCutter.cpp ImageCutter.h
         WorkPieceExtractor.cpp WorkPieceExtractor.h CameraCapture.cpp CameraCapture.h
         PerspectiveCorrector.cpp PerspectiveCorrector.h CameraCalibrator.cpp CameraCalibrator.h
         PixelsToMetric.cpp PixelsToMetric.h GcodeUpdater.cpp GcodeUpdater.h GcodePointUpdater.cpp

@@ -16,6 +16,12 @@
 
 TEST_CASE("Extracting elaborate"){
 
+    SECTION("Image with no workpiece throw runtime_error exception")
+    {
+        cv::Mat mat = Mat::zeros(500,500,CV_8UC1);
+        REQUIRE_THROWS_AS(WorkPieceExtractor().elaborate(mat), std::runtime_error);
+    }
+
     SECTION("Extracting elaborate from purpose-built matrix"){
 
         cv::Mat mat = Mat::zeros(500,500,CV_8UC1);

@@ -7,12 +7,14 @@
 
 WorkPiece WorkPieceExtractor::elaborate(const cv::Mat &mat) {
 
-    std::vector<std::vector<cv::Point>> contours = ContourDetector().contours(mat, false);
-    std::vector<cv::Point> biggestContour = BiggestContourFinder().elaborate(contours);
+    std::vector<std::vector<cv::Point>> contours = wp::contourDetector(mat, false);
+    if(contours.empty())
+        throw std::runtime_error("No workpiece found");
+    std::vector<cv::Point> biggestContour = wp::biggestContourFinder(contours);
     cv::RotatedRect r1 = cv::minAreaRect(biggestContour);
-    Point2f p[4];
+    cv::Point2f p[4];
     r1.points(p);
-    cv::Mat m = Mat::ones(500,500, CV_8UC1);
+    cv::Mat m = cv::Mat::ones(500,500, CV_8UC1);
 
     clock_t begin = clock();
 

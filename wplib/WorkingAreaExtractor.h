@@ -6,9 +6,6 @@
 #define WORKPIECE_PLACEMENT_WORKINGAREAEXTRACTOR_H
 
 #include "Image.h"
-#include "ContourDetector.h"
-#include "BiggestContourFinder.h"
-
 
 class WorkingAreaExtractor {
 

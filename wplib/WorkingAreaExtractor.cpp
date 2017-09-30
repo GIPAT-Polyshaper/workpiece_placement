@@ -15,7 +15,7 @@ Rect WorkingAreaExtractor::elaborate(const Image& img)
     cv::Mat* imgCopyMat = new cv::Mat();
     img.getMat().copyTo(*imgCopyMat);
     std::vector<std::vector<cv::Point>> biggestContour;
-    std::vector<cv::Point> bigcont = BiggestContourFinder().elaborate(ContourDetector().contours(img.getMat(), true));
+    std::vector<cv::Point> bigcont = wp::biggestContourFinder(wp::contourDetector(img.getMat(), true));
     biggestContour.push_back(bigcont);
     //filling white areas
     cv::drawContours(*imgCopyMat,biggestContour,-1, cv::Scalar(0,0,255), CV_FILLED);

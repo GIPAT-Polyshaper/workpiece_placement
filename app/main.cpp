@@ -5,8 +5,6 @@
 #include "../wplib/ImageCutter.h"
 #include "../wplib/WorkPieceExtractor.h"
 #include "../wplib/CameraCapture.h"
-#include "../wplib/BiggestContourFinder.h"
-#include "../wplib/ContourDetector.h"
 #include "../wplib/CameraCalibrator.h"
 #include "../wplib/PixelsToMetric.h"
 #include "../wplib/GcodeUpdater.h"
@@ -43,20 +41,28 @@
 //    if(mCapture.empty())
 //        return 0;
 //
-//    Image img("captured", mCapture);
+//    Image img = ImageLoader("../../sample_imgs/provaSenzaWorkpiece.png").getImage();
+//
+////    Image img("captured", mCapture);
 //
 //    img.show();
 //
 //    cv::Mat copyMat;
 //    img.getMat().copyTo(copyMat);
-//    //extracting working area from copy
+////    extracting working area from copy
 //    cv::Rect r = WorkingAreaExtractor().elaborate(Image("imgCopy", copyMat));
 //
-//    //deleting
-//    delete copyMat;
+////    deleting
+////    delete &copyMat;
 //
-//    //saving working area in a file
-//    WorkingAreaSaver().elaborate(r);
+////    saving working area in a file
+//    try {
+//        WorkingAreaSaver().elaborate(r);
+//    }catch (std::exception &ex) {
+//        std::cout << "An error occurred: "
+//                  << ex.what() << "!\n";
+//    }
+//
 //
 //    return 0;
 //}
@@ -66,6 +72,7 @@ int main() {
 
 
     Image img = ImageLoader("../../sample_imgs/prova.png").getImage();
+    img.show();
 
 //    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 //
@@ -113,7 +120,14 @@ int main() {
 //    waitKey(0);
 
     //loading working area from file
-    cv::Rect re = WorkingAreaLoader().elaborate();
+    cv::Rect re;
+    try {
+         re = WorkingAreaLoader().elaborate();
+
+    }catch (std::exception &ex) {
+        std::cout << "An error occurred: "
+                  << ex.what() << "!\n";
+    }
 
 //    //cut original image
     Image imgCut = ImageCutter().elaborate(img, re);
@@ -121,7 +135,13 @@ int main() {
     imgCut.show();
 
     //extracting workpiece
-    WorkPiece wp = WorkPieceExtractor().elaborate(imgCut.getMat());
+    WorkPiece wp;
+    try {
+        wp = WorkPieceExtractor().elaborate(imgCut.getMat());
+    }catch (std::exception &ex) {
+        std::cout << "An error occurred: "
+                  << ex.what() << "!\n";
+    }
 
 //    //create a bounding rectangle of workpiece
 //    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()),
@@ -148,7 +168,7 @@ int main() {
     float ymm;
     float sizemmX;
     float sizemmY;
-    float workingAreaHeightMm;
+    float workingAreaHeightMm = 0;
     try {
         //converting pixels in mm
         PixelsToMetric ptm(re.width);

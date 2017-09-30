@@ -13,7 +13,7 @@ namespace wp{
 
 
     /**
-     * @brief on it will be calculated the resizing factor
+     * @brief on it will be calculated the resizing factor of largestRectInNonConvexPoly function
      */
     const int maxMatWidth = 280;
 
@@ -154,6 +154,64 @@ namespace wp{
 
         return rrect;
     }
+
+
+    /**
+     * @brief Find external contours of shapes in the image
+     * @param mat opencv matrix where find contours
+     * @param inv if true search contours on inverted image(find black areas contour)
+     * @return vector of pointVector
+     */
+    std::vector<std::vector<cv::Point>> contourDetector(const cv::Mat &mat, bool inv)
+    {
+
+        cv::Mat mask;
+        // convert to binary|binary_inverted, findContours find only contours of white areas
+        (inv) ? cv::threshold(mat, mask, 0, 255,  CV_THRESH_BINARY_INV | CV_THRESH_OTSU)
+              : threshold(mat, mask, 0, 255,  CV_THRESH_BINARY | CV_THRESH_OTSU);
+//
+//    //todo da eliminare
+//    imshow("cap", mask);
+//    waitKey(0);
+
+        // find contours
+        std::vector<std::vector<cv::Point>> contours;
+        cv::findContours(mask,contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+
+
+//    //todo eliminare parte commentata
+//    imshow("ciao", mat);
+//    waitKey(0);
+
+        return contours;
+    }
+
+
+    /**
+    * @brief Find and return the contour having the biggest area
+    * @throw invalid_argument exception when empty vector
+    * @return the biggest contour (biggest area) in the vector
+    */
+    std::vector<cv::Point> biggestContourFinder(const std::vector<std::vector<cv::Point>> &contours)
+    {
+        std::vector<cv::Point> p;
+        if(contours.size()==0)
+            throw std::invalid_argument("Empty vector");
+        int largest_area = 0;
+        int largest_contour_index = 0;
+        for (int i = 0; i < contours.size(); i++) {
+            //  Find the area of Contour
+            double a = contourArea(contours[i], false);
+            if (a > largest_area) {
+                largest_area = a;
+                // Store the index of largest Contour
+                largest_contour_index = i;
+            }
+        }
+        std::vector<cv::Point> t = contours[largest_contour_index];
+        return t;
+    }
+
 
 }
 

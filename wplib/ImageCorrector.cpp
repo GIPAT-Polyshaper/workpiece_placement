@@ -22,8 +22,7 @@ std::vector<cv::Mat> ImageCorrector::readParams()const {
     fs.open(this->filename, FileStorage::READ);
 
     if(!fs.isOpened())
-        //TODO throw exeption?
-        ;
+        throw std::runtime_error("Could not open file");
     Mat intrinsic, distCoeffs;
     fs["distortion_coefficients"] >> distCoeffs;
     fs["intrinsic_matrix"] >> intrinsic;

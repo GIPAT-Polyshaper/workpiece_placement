@@ -5,12 +5,7 @@
 #ifndef WORKPIECE_PLACEMENT_WORKPIECEEXTRACTOR_H
 #define WORKPIECE_PLACEMENT_WORKPIECEEXTRACTOR_H
 
-//TODO what happend if no workpiece found?????????
-
 #include "WorkPiece.h"
-#include "ContourDetector.h"
-#include "BiggestContourFinder.h"
-
 
 class WorkPieceExtractor {
 
@@ -24,12 +19,12 @@ public:
     /**
      * @brief Find the workpiece
      * @param mat matrix where look for workpiece
+     * @throw runtime_error if no workpiece found
      * @return workpiece
      */
     WorkPiece elaborate(const cv::Mat &mat);
 
 
 };
-
 
 #endif //WORKPIECE_PLACEMENT_WORKPIECEEXTRACTOR_H

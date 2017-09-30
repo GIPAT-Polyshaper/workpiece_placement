@@ -27,6 +27,7 @@ private:
 
     /**
      * @brief Read undistortion params
+     * @throw runtime_error if can't open file indicates in filename const
      * @return a vector, first element is intrinsic matrix, second is distCoeff matrix
      */
     std::vector<cv::Mat> readParams()const;
