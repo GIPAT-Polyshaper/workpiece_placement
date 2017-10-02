@@ -11,6 +11,7 @@
 #include "../wplib/GcodePointUpdater.h"
 #include "../wplib/WorkingAreaLoader.h"
 #include "../wplib/WorkingAreaSaver.h"
+#include "../wplib/ImageCorrector.h"
 #include <opencv2/aruco.hpp>
 
 
@@ -23,14 +24,15 @@
 //    int numBoards = 0;
 //    int numCornersHor;
 //    int numCornersVer;
-//    printf("Enter number of corners along width: ");
-//    scanf("%d", &numCornersHor);
 //
-//    printf("Enter number of corners along height: ");
-//    scanf("%d", &numCornersVer);//todo change to cin
+//    std::cout<<("Enter number of corners along width: ");
+//    std::cin>>numCornersHor;
 //
-//    printf("Enter number of boards: ");
-//    scanf("%d", &numBoards);
+//    std::cout<<("Enter number of corners along height: ");
+//    std::cin>>numCornersVer;
+//
+//    std::cout<<("Enter number of boards: ");
+//    std::cin>>numBoards;
 //
 //    CameraCalibrator cc( numCornersHor, numCornersVer, numBoards);
 //    cc.elaborate(1);
@@ -41,19 +43,17 @@
 //    if(mCapture.empty())
 //        return 0;
 //
-//    Image img = ImageLoader("../../sample_imgs/provaSenzaWorkpiece.png").getImage();
+////    Image img = ImageLoader("../../sample_imgs/provaSenzaWorkpiece.png").getImage();
 //
-////    Image img("captured", mCapture);
+//    Image img("captured", mCapture);
 //
 //    img.show();
 //
 //    cv::Mat copyMat;
 //    img.getMat().copyTo(copyMat);
+//
 ////    extracting working area from copy
 //    cv::Rect r = WorkingAreaExtractor().elaborate(Image("imgCopy", copyMat));
-//
-////    deleting
-////    delete &copyMat;
 //
 ////    saving working area in a file
 //    try {
@@ -63,16 +63,14 @@
 //                  << ex.what() << "!\n";
 //    }
 //
-//
 //    return 0;
 //}
 
 
 int main() {
 
-
+    //Image capturing
     Image img = ImageLoader("../../sample_imgs/prova.png").getImage();
-    img.show();
 
 //    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 //
@@ -80,72 +78,52 @@ int main() {
 //    if(mCapture.empty())
 //        return 0;
 //
-//
-//
 //    Image img("captured", mCapture);
 //    time_t timer;
 //    time(&timer);
 //    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
 //    imwrite(name , img.getMat());
 
-//
-//    cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
-//    std::vector<int> ids;
-//    std::vector<std::vector<cv::Point2f> > corners;
-//    cv::aruco::detectMarkers(copyMat, dictionary, corners, ids);
-//
-//    cv::aruco::drawDetectedMarkers(copyMat, corners, ids);
-//    imshow("copm", copyMat);
-//    waitKey(0);
-//
-//    if(corners.size() != 4)
-//    {return 0;}
-//
-//    int index0;
-//    int index2;
-//    for(int i = 0; i < 4; i++){
-//
-//        if(ids[i] == 0)
-//            index0 = i;
-//        if(ids[i]==2)
-//            index2 = i;
+//    //correcting camera distortion
+//    try
+//    {
+//        img = ImageCorrector().elaborate(img);
 //    }
-//    cv::Rect arucoRect(corners[index0][2], corners[index2][1]);
+//    catch (std::exception &ex) {
+//        std::cerr << "An error occurred: "
+//                  << ex.what() << "!\n";
+//    }
 
-//    cv::Mat copyMat;
-//    img.getMat().copyTo(copyMat);
-//    cv::rectangle(copyMat, arucoRect, cv::Scalar(255,255,255), 2);
-//
-//    imshow("image",copyMat);
-//    waitKey(0);
+    img.show();
+
 
     //loading working area from file
     cv::Rect re;
-    try {
+    try
+    {
          re = WorkingAreaLoader().elaborate();
-
-    }catch (std::exception &ex) {
-        std::cout << "An error occurred: "
+    }
+    catch (std::exception &ex) {
+        std::cerr << "An error occurred: "
                   << ex.what() << "!\n";
     }
 
-//    //cut original image
+    //cut original image
     Image imgCut = ImageCutter().elaborate(img, re);
 
     imgCut.show();
 
     //extracting workpiece
     WorkPiece wp;
-    try {
+    try
+    {
         wp = WorkPieceExtractor().elaborate(imgCut.getMat());
-    }catch (std::exception &ex) {
-        std::cout << "An error occurred: "
+    }
+    catch (std::exception &ex)
+    {
+        std::cerr << "An error occurred: "
                   << ex.what() << "!\n";
     }
-
-//    //create a bounding rectangle of workpiece
-//    cv::RotatedRect rr = cv::RotatedRect(wp.getCenterPoint(),cv::Size(wp.getLongSide(), wp.getShortSide()),
-//                                         90 + wp.getAngle());
 
     //draw workpiece bounds
     cv::Mat m = imgCut.getMat();
@@ -169,7 +147,8 @@ int main() {
     float sizemmX;
     float sizemmY;
     float workingAreaHeightMm = 0;
-    try {
+    try
+    {
         //converting pixels in mm
         PixelsToMetric ptm(re.width);
         xmm = ptm.elaborate(wp.getVertices()[0].x);
@@ -185,7 +164,9 @@ int main() {
         std::cout<< "ymm: " << ymm << std::endl;
         std::cout<< "sizemm: " << sizemmX <<"x"<< sizemmY;
 
-    } catch (const std::invalid_argument& ia) {
+    }
+    catch (const std::invalid_argument& ia)
+    {
         std::cerr << "Invalid argument: " << ia.what() << '\n';
     }
 
@@ -194,9 +175,7 @@ int main() {
     auto output = std::ostringstream();
 
     gcode.open("../../sample_gcode/prova-003.gcode", std::ifstream::in );
-//    auto input = std::istringstream("Dummy\nG00 X10\nMore dummyStuffs\nG01 Z10 Y67\nfinal dummy stuff");
 
-//
 //    if(gcode.is_open())
 //        std::cout << "ok" << std::endl;
 //    else
@@ -221,6 +200,9 @@ int main() {
 
     }
     std::cout << output.str()<< std::endl;
+    std::ofstream outFile("out.gcode",std::ofstream::out);
+    outFile << output.str();
+    outFile.close();
     gcode.close();
     return 0;
 }

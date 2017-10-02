@@ -14,6 +14,7 @@ public:
 
     /**
      * @brief Take an Image and correct distorsions
+     * @throws exception in the read member function
      * @return Undistorted image
      */
     Image elaborate(const Image &) const;
@@ -28,6 +29,7 @@ private:
     /**
      * @brief Read undistortion params
      * @throw runtime_error if can't open file indicates in filename const
+     * @throw runtime_error if calibration matrix are empty
      * @return a vector, first element is intrinsic matrix, second is distCoeff matrix
      */
     std::vector<cv::Mat> readParams()const;

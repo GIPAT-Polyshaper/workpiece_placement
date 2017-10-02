@@ -8,7 +8,7 @@
 Image ImageCorrector::elaborate(const Image & img) const {
 
     Mat intrinsic, distCoeffs;
-    auto params = ImageCorrector::readParams();
+    auto params = this->readParams();
     intrinsic = params.front();
     distCoeffs = params.back();
     Mat undistortMat;
@@ -22,15 +22,13 @@ std::vector<cv::Mat> ImageCorrector::readParams()const {
     fs.open(this->filename, FileStorage::READ);
 
     if(!fs.isOpened())
-        throw std::runtime_error("Could not open file");
+        throw std::runtime_error("Could not open correction file");
     Mat intrinsic, distCoeffs;
     fs["distortion_coefficients"] >> distCoeffs;
     fs["intrinsic_matrix"] >> intrinsic;
     if (distCoeffs.empty() || intrinsic.empty())
-    //todo throw exeption?
-        ;
-
-     std::vector<cv::Mat> params;
+        throw std::runtime_error("Intrinsic matrix and/or distortion coefficients matrix empty. Re-run calibration");
+    std::vector<cv::Mat> params;
     params.push_back(intrinsic);
     params.push_back(distCoeffs);
     return params;
