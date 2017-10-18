@@ -18,73 +18,26 @@
 //TODO controllare esistenza file di calibrazione
 
 
-//use this main for camera calibration and working area search
-//int main(){
-//
-//    int numBoards = 0;
-//    int numCornersHor;
-//    int numCornersVer;
-//
-//    std::cout<<("Enter number of corners along width: ");
-//    std::cin>>numCornersHor;
-//
-//    std::cout<<("Enter number of corners along height: ");
-//    std::cin>>numCornersVer;
-//
-//    std::cout<<("Enter number of boards: ");
-//    std::cin>>numBoards;
-//
-//    CameraCalibrator cc( numCornersHor, numCornersVer, numBoards);
-//    cc.elaborate(1);
-//
-//    std::cout<<"Press 's' to capture and start working area detection, 'Esc' to abort"<<std::endl;
-//
-//    cv::Mat mCapture = CameraCapture(1).capturing();
-//    if(mCapture.empty())
-//        return 0;
-//
-////    Image img = ImageLoader("../../sample_imgs/provaSenzaWorkpiece.png").getImage();
-//
-//    Image img("captured", mCapture);
-//
-//    img.show();
-//
-//    cv::Mat copyMat;
-//    img.getMat().copyTo(copyMat);
-//
-////    extracting working area from copy
-//    cv::Rect r = WorkingAreaExtractor().elaborate(Image("imgCopy", copyMat));
-//
-////    saving working area in a file
-//    try {
-//        WorkingAreaSaver().elaborate(r);
-//    }catch (std::exception &ex) {
-//        std::cout << "An error occurred: "
-//                  << ex.what() << "!\n";
-//    }
-//
-//    return 0;
-//}
 
 
 int main() {
 
     //Image capturing
-    Image img = ImageLoader("../../sample_imgs/prova.png").getImage();
+//    Image img = ImageLoader("../../sample_imgs/prova.png").getImage();
 
-//    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
-//
-//    cv::Mat mCapture = CameraCapture(1).capturing();
-//    if(mCapture.empty())
-//        return 0;
-//
-//    Image img("captured", mCapture);
-//    time_t timer;
-//    time(&timer);
-//    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
-//    imwrite(name , img.getMat());
+    std::cout<<"Press 's' to capture, 'Esc' to abort"<<std::endl;
 
-//    //correcting camera distortion
+    cv::Mat mCapture = CameraCapture(1).capturing();
+    if(mCapture.empty())
+        return 0;
+
+    Image img("captured", mCapture);
+    time_t timer;
+    time(&timer);
+    std::string name = "../../shots/shot" + std::to_string( timer) +".bmp";
+    imwrite(name , img.getMat());
+
+    //correcting camera distortion
 //    try
 //    {
 //        img = ImageCorrector().elaborate(img);
@@ -174,7 +127,7 @@ int main() {
     std::ifstream gcode;
     auto output = std::ostringstream();
 
-    gcode.open("../../sample_gcode/prova-003.gcode", std::ifstream::in );
+    gcode.open("../../sample_gcode/provaFine1.gcode", std::ifstream::in );
 
 //    if(gcode.is_open())
 //        std::cout << "ok" << std::endl;
