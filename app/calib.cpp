@@ -49,7 +49,7 @@ int main(){
     rectangle(copyMat, r,Scalar(0,0,255), 2);
     imshow("ciao", copyMat);
     waitKey(0);
-    
+
 //    saving working area in a file
     try {
         WorkingAreaSaver().elaborate(r);

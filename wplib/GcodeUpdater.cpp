@@ -61,6 +61,7 @@ bool GcodeUpdater::extractPoint(const std::string& str)
 {
   auto stream = std::istringstream(str);
   std::string tmpCommand;
+  bool thereIsF = false;
 
   stream >> tmpCommand;
 
@@ -96,10 +97,16 @@ bool GcodeUpdater::extractPoint(const std::string& str)
     case 'E':
       readAndStore(3);
       break;
+    case 'F':
+        thereIsF = true;
+      break;
     default:
       break;
     }
   }
+
+  if(thereIsF)
+      return false;
 
   m_nextPoint = m_originalNextPoint;
 

@@ -38,6 +38,15 @@ TEST_CASE("Updating a gcode file") {
     REQUIRE(output.str() == input.str() + "\n");
   }
 
+  SECTION("if the input contains any F, copy to output as-is") {
+    auto input = std::istringstream("G01 F300\nDummy stuff for sure");
+
+    auto gcodeUpdater = GcodeUpdater(input, output);
+
+    REQUIRE(gcodeUpdater.hasNextPoint() == false);
+    REQUIRE(output.str() == input.str() + "\n");
+  }
+
   SECTION("hasNextPoint returns true if stream contains G00s") {
     auto input = std::istringstream("G00 X10.2 Y12.3 Z-98.3 E123.4");
 
